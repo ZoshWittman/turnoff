@@ -1,0 +1,100 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function uid() {
+      return request.auth.uid;
+    }
+
+    function isSelf(userId) {
+      return signedIn() && uid() == userId;
+    }
+
+    function memberPath(familyId, userId) {
+      return /databases/$(database)/documents/families/$(familyId)/members/$(userId);
+    }
+
+    function isFamilyMember(familyId) {
+      return signedIn() && exists(memberPath(familyId, uid()));
+    }
+
+    function memberRole(familyId) {
+      return get(memberPath(familyId, uid())).data.role;
+    }
+
+    function isParentIn(familyId) {
+      return isFamilyMember(familyId) && memberRole(familyId) == 'parent';
+    }
+
+    function isChildIn(familyId) {
+      return isFamilyMember(familyId) && memberRole(familyId) == 'child';
+    }
+
+    function unchanged(fields) {
+      return !request.resource.data.diff(resource.data).affectedKeys().hasAny(fields);
+    }
+
+    // Users may read/write only their own profile. Role is a hint; membership is source of truth.
+    match /users/{userId} {
+      allow read, write: if isSelf(userId);
+    }
+
+    // Families are created by Cloud Functions. Members may read. Clients never write pairing fields.
+    match /families/{familyId} {
+      allow read: if isFamilyMember(familyId);
+      allow create, update, delete: if false;
+
+      match /members/{memberId} {
+        allow read: if isFamilyMember(familyId);
+        allow create, update, delete: if false;
+      }
+    }
+
+    // Pairing codes are redeemable only via callable functions.
+    match /pairingCodes/{code} {
+      allow read, write: if false;
+    }
+
+    match /rateLimits/{id} {
+      allow read, write: if false;
+    }
+
+    // lockState / lockSource / lockedAt / unlockAt / lastCommandId are Admin-only.
+    // A child may update presence fields on their own device.
+    match /devices/{deviceId} {
+      allow read: if signedIn()
+        && isFamilyMember(resource.data.familyId);
+
+      allow create: if false;
+
+      allow update: if signedIn()
+        && isFamilyMember(resource.data.familyId)
+        && resource.data.uid == uid()
+        && resource.data.role == 'child'
+        && unchanged([
+          'familyId', 'uid', 'role', 'platform',
+          'lockState', 'lockSource', 'lockedAt', 'unlockAt', 'lastCommandId'
+        ])
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['pushToken', 'name', 'lastSeenAt']);
+
+      allow delete: if false;
+    }
+
+    // Commands are written only by Cloud Functions.
+    match /commands/{commandId} {
+      allow read: if signedIn() && isFamilyMember(resource.data.familyId);
+      allow create, update, delete: if false;
+    }
+
+    // Children create unlock requests via functions. Clients may read their family's requests.
+    match /unlockRequests/{requestId} {
+      allow read: if signedIn() && isFamilyMember(resource.data.familyId);
+      allow create, update, delete: if false;
+    }
+  }
+}
