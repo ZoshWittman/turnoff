@@ -21,6 +21,7 @@ export default function App() {
   const [remaining, setRemaining] = useState(PRESETS[2].seconds)
   const [phase, setPhase] = useState<Phase>('idle')
   const intervalRef = useRef<number | null>(null)
+  const deadlineRef = useRef<number>(0)
 
   const clearTimer = useCallback(() => {
     if (intervalRef.current !== null) {
@@ -31,24 +32,38 @@ export default function App() {
 
   useEffect(() => clearTimer, [clearTimer])
 
-  const start = useCallback(() => {
-    if (phase === 'running') return
-    setPhase('running')
+  // Deadline-based countdown: the displayed time is always derived from an
+  // absolute end timestamp, so it stays accurate regardless of tick jitter,
+  // background throttling, or duplicate intervals.
+  const runToDeadline = useCallback(() => {
     clearTimer()
-    intervalRef.current = window.setInterval(() => {
-      setRemaining((prev) => {
-        if (prev <= 1) {
-          clearTimer()
-          setPhase('done')
-          return 0
-        }
-        return prev - 1
-      })
-    }, 1000)
-  }, [phase, clearTimer])
+    const tick = () => {
+      const secondsLeft = Math.max(
+        0,
+        Math.ceil((deadlineRef.current - Date.now()) / 1000),
+      )
+      setRemaining(secondsLeft)
+      if (secondsLeft <= 0) {
+        clearTimer()
+        setPhase('done')
+      }
+    }
+    tick()
+    intervalRef.current = window.setInterval(tick, 250)
+  }, [clearTimer])
+
+  const start = useCallback(() => {
+    if (phase === 'running' || remaining <= 0) return
+    deadlineRef.current = Date.now() + remaining * 1000
+    setPhase('running')
+    runToDeadline()
+  }, [phase, remaining, runToDeadline])
 
   const pause = useCallback(() => {
     clearTimer()
+    setRemaining(
+      Math.max(0, Math.ceil((deadlineRef.current - Date.now()) / 1000)),
+    )
     setPhase('paused')
   }, [clearTimer])
 
