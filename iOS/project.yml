@@ -1,0 +1,183 @@
+name: ParentLock
+options:
+  bundleIdPrefix: com.parentlock
+  deploymentTarget:
+    iOS: "17.0"
+  xcodeVersion: "15.4"
+  createIntermediateGroups: true
+  developmentLanguage: en
+settings:
+  base:
+    SWIFT_VERSION: "5.10"
+    IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    CURRENT_PROJECT_VERSION: 1
+    MARKETING_VERSION: "1.0"
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    DEAD_CODE_STRIPPING: YES
+packages:
+  firebase-ios-sdk:
+    url: https://github.com/firebase/firebase-ios-sdk
+    majorVersion: 11.0.0
+targets:
+  ParentLockShared:
+    type: framework
+    platform: iOS
+    sources:
+      - path: ParentLockShared
+        excludes:
+          - "*.entitlements"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.parentlock.shared
+        PRODUCT_NAME: ParentLockShared
+        GENERATE_INFOPLIST_FILE: YES
+        DEFINES_MODULE: YES
+        SKIP_INSTALL: YES
+        APPLICATION_EXTENSION_API_ONLY: YES
+        DYLIB_INSTALL_NAME_BASE: "@rpath"
+        CODE_SIGN_ENTITLEMENTS: ParentLockShared/ParentLockShared.entitlements
+  ParentLock:
+    type: application
+    platform: iOS
+    sources:
+      - path: ParentLock
+        excludes:
+          - "GoogleService-Info.plist.example"
+    resources:
+      - path: ParentLock/Resources/Assets.xcassets
+      - path: ParentLock/GoogleService-Info.plist
+        optional: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.parentlock.app
+        PRODUCT_NAME: ParentLock
+        INFOPLIST_FILE: ParentLock/Resources/Info.plist
+        CODE_SIGN_ENTITLEMENTS: ParentLock/Resources/ParentLock.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        GENERATE_INFOPLIST_FILE: NO
+        LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/Frameworks"
+    entitlements:
+      path: ParentLock/Resources/ParentLock.entitlements
+    dependencies:
+      - target: ParentLockShared
+        embed: true
+      - target: ParentLockMonitor
+        embed: true
+      - target: ParentLockShieldConfig
+        embed: true
+      - target: ParentLockShieldAction
+        embed: true
+      - target: ParentLockNotificationService
+        embed: true
+      - package: firebase-ios-sdk
+        product: FirebaseAuth
+      - package: firebase-ios-sdk
+        product: FirebaseCore
+      - package: firebase-ios-sdk
+        product: FirebaseFirestore
+      - package: firebase-ios-sdk
+        product: FirebaseFunctions
+      - package: firebase-ios-sdk
+        product: FirebaseMessaging
+    info:
+      path: ParentLock/Resources/Info.plist
+  ParentLockMonitor:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: ParentLockMonitor
+        excludes:
+          - "*.entitlements"
+          - Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.parentlock.app.monitor
+        PRODUCT_NAME: ParentLockMonitor
+        INFOPLIST_FILE: ParentLockMonitor/Info.plist
+        CODE_SIGN_ENTITLEMENTS: ParentLockMonitor/ParentLockMonitor.entitlements
+        GENERATE_INFOPLIST_FILE: NO
+        APPLICATION_EXTENSION_API_ONLY: YES
+        SKIP_INSTALL: YES
+        LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks"
+    dependencies:
+      - target: ParentLockShared
+        embed: false
+  ParentLockShieldConfig:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: ParentLockShieldConfig
+        excludes:
+          - "*.entitlements"
+          - Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.parentlock.app.shieldconfig
+        PRODUCT_NAME: ParentLockShieldConfig
+        INFOPLIST_FILE: ParentLockShieldConfig/Info.plist
+        CODE_SIGN_ENTITLEMENTS: ParentLockShieldConfig/ParentLockShieldConfig.entitlements
+        GENERATE_INFOPLIST_FILE: NO
+        APPLICATION_EXTENSION_API_ONLY: YES
+        SKIP_INSTALL: YES
+        LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks"
+    dependencies:
+      - target: ParentLockShared
+        embed: false
+  ParentLockShieldAction:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: ParentLockShieldAction
+        excludes:
+          - "*.entitlements"
+          - Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.parentlock.app.shieldaction
+        PRODUCT_NAME: ParentLockShieldAction
+        INFOPLIST_FILE: ParentLockShieldAction/Info.plist
+        CODE_SIGN_ENTITLEMENTS: ParentLockShieldAction/ParentLockShieldAction.entitlements
+        GENERATE_INFOPLIST_FILE: NO
+        APPLICATION_EXTENSION_API_ONLY: YES
+        SKIP_INSTALL: YES
+        LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks"
+    dependencies:
+      - target: ParentLockShared
+        embed: false
+  ParentLockNotificationService:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: ParentLockNotificationService
+        excludes:
+          - "*.entitlements"
+          - Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.parentlock.app.notificationservice
+        PRODUCT_NAME: ParentLockNotificationService
+        INFOPLIST_FILE: ParentLockNotificationService/Info.plist
+        CODE_SIGN_ENTITLEMENTS: ParentLockNotificationService/ParentLockNotificationService.entitlements
+        GENERATE_INFOPLIST_FILE: NO
+        APPLICATION_EXTENSION_API_ONLY: YES
+        SKIP_INSTALL: YES
+        LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks"
+    dependencies:
+      - target: ParentLockShared
+        embed: false
+schemes:
+  ParentLock:
+    build:
+      targets:
+        ParentLock: all
+        ParentLockShared: all
+        ParentLockMonitor: all
+        ParentLockShieldConfig: all
+        ParentLockShieldAction: all
+        ParentLockNotificationService: all
+    run:
+      config: Debug
+    archive:
+      config: Release

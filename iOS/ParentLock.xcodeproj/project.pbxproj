@@ -1,0 +1,1399 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5C1A06D3E581C61892D85D0D /* AppGroupStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEEAEF0EAC4255DC4667164 /* AppGroupStore.swift */; };
+		7E14098D897718A3BDC56D66 /* DarwinBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F9720E6BBA900BF6FDBE0 /* DarwinBridge.swift */; };
+		7F6E17864A1DE690EC7C784F /* FamilySelectionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E1C7D4C7FF5D70121EFD03 /* FamilySelectionStore.swift */; };
+		F31A9F6A3D87FF294292B735 /* LockState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF92878A089E483D346BD31 /* LockState.swift */; };
+		DCBF093E0AE7A692E20C9A30 /* ParentLockLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3D845056DB431774DAE7A8 /* ParentLockLog.swift */; };
+		2BB7741EA770E473DEC2206D /* PendingCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC05C83F0E7057E49110EC3 /* PendingCommand.swift */; };
+		D5D63844767FAC62023E0336 /* SharedConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3957D2CFC3AC251A8900FFA /* SharedConstants.swift */; };
+		FEF71D2311E58EE88DF9689B /* ShieldService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89C83AA79296255139E0BC5D /* ShieldService.swift */; };
+		76FF6B3FB6E383A526B05712 /* TimedUnlockScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59F9C5C8D1CD6ECEE25600F /* TimedUnlockScheduler.swift */; };
+		C2A3A3454C9929CF03887240 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18166F1A693CA222BFF4C8DD /* AppDelegate.swift */; };
+		033C7C676044E1CDFEB246E7 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E8BAF151E4055385D60EB9 /* AppEnvironment.swift */; };
+		E47C899A8E22509555E63D4A /* AppRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DCEB86A5079A389431F8FB /* AppRootView.swift */; };
+		D4750FA19C0630A6C7E8CA41 /* ParentLockApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED0FD4259D18EF1784FF6B0 /* ParentLockApp.swift */; };
+		89B517E50900F09189A851A5 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91010EA5DBBE4A4299D2DF0 /* SignInView.swift */; };
+		0BF6B76BB95AEBC7C36CCFF5 /* AlwaysAllowedPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B94ABD899A93936EDDDE62 /* AlwaysAllowedPickerView.swift */; };
+		FA57EF7640A6B3F6D27AE14E /* ChildHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10ADDACF0FCFA9F5AF23C26 /* ChildHomeView.swift */; };
+		73AB7015204C7E2623B429B2 /* ChildSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91067E99F69DAE57C65F0F41 /* ChildSettingsView.swift */; };
+		570CDCA30B2CF3029E6AB4D4 /* FamilyAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85728554339E120754E0DF6 /* FamilyAuthView.swift */; };
+		6C9F3B620C37B9DC8651DD08 /* UnlockRequestButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03404DD38143C3399AB3353A /* UnlockRequestButton.swift */; };
+		A15F36AD6F628E4A3B3E0BC2 /* RolePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4EF9C9F7F74271C4E28BFEC /* RolePickerView.swift */; };
+		037BAB8A5875C8E96681C767 /* PairingCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDB273ED735A1A8DF960160C /* PairingCodeView.swift */; };
+		8CD559FC9AE4DF8E332E6474 /* QRScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B4133862EADB435E7BB4E /* QRScannerView.swift */; };
+		35C0BCA8CDD397CE87607687 /* RedeemCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D94B2824049D5E3F4B3721 /* RedeemCodeView.swift */; };
+		FA6D22087BCBF41BC9C30C3C /* ChildDeviceCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B72188B9BE0BB250581E85 /* ChildDeviceCard.swift */; };
+		5331BE34A6A461947FC5709D /* CommandButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AD556AF35D3BE122AD1687 /* CommandButtons.swift */; };
+		5D989E5E4899B9FE6CD8BA9D /* ParentHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A339D50E74BFACB9B50376B /* ParentHomeView.swift */; };
+		196313F3E2BB94E4316A038F /* ParentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4760F31664F27DDDE0240EFA /* ParentSettingsView.swift */; };
+		D2F4A11595579F1A681BF5D6 /* UnlockRequestInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213C65E49E3A78BB45B39380 /* UnlockRequestInbox.swift */; };
+		B31E1A376548A2D38E198466 /* StatusPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC896419975CB9087D158CE5 /* StatusPill.swift */; };
+		B04B705DBD67767FC8311C9C /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = B168B35E5A566FAAB304A66D /* Command.swift */; };
+		40B251992A32619E7469EBAD /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBDF223039F54D433764D08A /* Device.swift */; };
+		0DCD2E382F4DFE212C095686 /* Family.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05ED35120C2222E9E115D05A /* Family.swift */; };
+		4327121C368C20B94633900D /* FirestoreDecoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F9DACFA8996FB2330DC6748 /* FirestoreDecoding.swift */; };
+		A091329CD7C79B5E458D53FB /* UnlockRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A165FDC4817E11CB8A2C7957 /* UnlockRequest.swift */; };
+		A97B3652052F24AC68F29410 /* UserRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5A221452D4D65931A17ED3 /* UserRole.swift */; };
+		85E2DE173D9A957930185E49 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26FD9459378EB071AA28629E /* AuthService.swift */; };
+		82CC62C40ED7434605A926E8 /* BackgroundRefreshService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C1389222BE9C3D29185FC83 /* BackgroundRefreshService.swift */; };
+		A8D39CCAE2D559F35EE65854 /* CommandApplier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0278C75436F820E9B02643F /* CommandApplier.swift */; };
+		7A9D30F3D0BE6E830F082865 /* CommandService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70107B872EE268FFFCADED65 /* CommandService.swift */; };
+		15C8D5662DD1A5FD1412CDD4 /* DeviceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B2AF4656B165CBC3C780BF /* DeviceService.swift */; };
+		9397B10B8C54D3C932E6F230 /* FamilyControlsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E326AD68704490DE50273B02 /* FamilyControlsService.swift */; };
+		293EEA72FE7C1832023A915F /* FamilyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780C9A3283BB7AFEA4B6267A /* FamilyService.swift */; };
+		318949FEB47E391936D3AA23 /* ParentLockError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48095BBA6C917EAB5E538D3A /* ParentLockError.swift */; };
+		DFD87094569FD288E8ED00AE /* PushService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFD00FF6BC3CC29A44744F1 /* PushService.swift */; };
+		50399C67304055A844961E90 /* QRCodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD62A3CC17835AFD721403C /* QRCodeService.swift */; };
+		3BF7B361F6DC14A3C8FF4580 /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EABDE90E8FA62952AB6C53 /* SessionStore.swift */; };
+		A2CB5B15394489700D80A352 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7C87DFFD41BC30C3FAA1C4C /* Assets.xcassets */; };
+		7734DD99635484E93C6090A4 /* DeviceActivityMonitorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F448351857E5E0EF623183 /* DeviceActivityMonitorExtension.swift */; };
+		8FB04C5F665718A6279D3D45 /* ShieldConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9713683F57E3630BC241664F /* ShieldConfigurationExtension.swift */; };
+		04B1E231849B03F5C9A2ED2B /* ShieldActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8223D1A7EDCCB6C159FAE22D /* ShieldActionExtension.swift */; };
+		537730CC2EAEAC0CF79D490B /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060AB8185C0DF3608FDB8F51 /* NotificationService.swift */; };
+		CD7133CA3C08190D22365650 /* ParentLockShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 355BFC7E8267DCF536F5968D /* ParentLockShared.framework */; };
+		01B408E0C1FFADF607622360 /* ParentLockShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 355BFC7E8267DCF536F5968D /* ParentLockShared.framework */; };
+		7E3A5128968C4FF9082650B1 /* ParentLockShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 355BFC7E8267DCF536F5968D /* ParentLockShared.framework */; };
+		FA3161A5290141B296993AED /* ParentLockShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 355BFC7E8267DCF536F5968D /* ParentLockShared.framework */; };
+		8E5A57F2D8527605A85862A9 /* ParentLockShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 355BFC7E8267DCF536F5968D /* ParentLockShared.framework */; };
+		E237B6F6CB4296D03564F022 /* ParentLockShared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 355BFC7E8267DCF536F5968D /* ParentLockShared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0A027EE23E40A3A7B2269D14 /* ParentLockMonitor.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B464FE2AC1FC0F06ABA5AA0A /* ParentLockMonitor.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		6CADF3C607CCC9255BA7283E /* ParentLockShieldConfig.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 464336C1D42A2AE30C5B96D4 /* ParentLockShieldConfig.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		18D50069AE98421B92B4CAF1 /* ParentLockShieldAction.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 130EA0EB7C30BA71DDBA069D /* ParentLockShieldAction.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		F9BF4FED504C925066FA2576 /* ParentLockNotificationService.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 61770682D7D9FEC0E4120C9E /* ParentLockNotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		DF9F1D5BF5650DD77CBE770A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 7C19287A5449DD32880C1A11 /* FirebaseAuth */; };
+		DC70013DC7C50726B321EEBC /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 82A02836E3960805D86F720E /* FirebaseCore */; };
+		C2B67A5458858C0125431E34 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 17DFCC27A6F5AFF2E6EA71A9 /* FirebaseFirestore */; };
+		325B104F0EC13D70FEB3BBF3 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = A316B566103B93B4B84D80BF /* FirebaseFunctions */; };
+		05B6CC7FFB1173EBCD6B7E7D /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = A2E7194CEC1016A5637A5E9B /* FirebaseMessaging */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		12FFBCD4B28EA9D53E6A94AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1A8F9400F0D4D797EA942D61;
+			remoteInfo = ParentLockShared;
+		};
+		94277CC0A6F375C207A70EA7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0F831DDF3234BB836A56DF1A;
+			remoteInfo = ParentLockMonitor;
+		};
+		9CC9B07566572F69696F6D3E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C5DEA84074D99CD3102F391D;
+			remoteInfo = ParentLockShieldConfig;
+		};
+		E6803F73FC91E5A259566A44 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 45E3E1FC630EC309A6F702D7;
+			remoteInfo = ParentLockShieldAction;
+		};
+		D0348F6BFC387315FAFD9F5E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F450B6416EBDA8398BF8BDD7;
+			remoteInfo = ParentLockNotificationService;
+		};
+		C7529E9251ADFF9285D8716B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1A8F9400F0D4D797EA942D61;
+			remoteInfo = ParentLockShared;
+		};
+		E8FF293FDC94FB28A6A4A5B0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1A8F9400F0D4D797EA942D61;
+			remoteInfo = ParentLockShared;
+		};
+		3C53552C11A9AC54B158E152 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1A8F9400F0D4D797EA942D61;
+			remoteInfo = ParentLockShared;
+		};
+		31C65F9CD91EA1660BA30F33 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1A8F9400F0D4D797EA942D61;
+			remoteInfo = ParentLockShared;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		63D962C53EEED3979E1F5E39 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E237B6F6CB4296D03564F022,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C5C4A83FA21F59AAF524B9A /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				0A027EE23E40A3A7B2269D14,
+				6CADF3C607CCC9255BA7283E,
+				18D50069AE98421B92B4CAF1,
+				F9BF4FED504C925066FA2576,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		355BFC7E8267DCF536F5968D /* ParentLockShared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ParentLockShared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A051A37FA6B3044CC67E32A /* ParentLock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ParentLock.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B464FE2AC1FC0F06ABA5AA0A /* ParentLockMonitor.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ParentLockMonitor.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		464336C1D42A2AE30C5B96D4 /* ParentLockShieldConfig.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ParentLockShieldConfig.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		130EA0EB7C30BA71DDBA069D /* ParentLockShieldAction.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ParentLockShieldAction.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		61770682D7D9FEC0E4120C9E /* ParentLockNotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ParentLockNotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		ADEEAEF0EAC4255DC4667164 /* AppGroupStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroupStore.swift; sourceTree = "<group>"; };
+		975F9720E6BBA900BF6FDBE0 /* DarwinBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarwinBridge.swift; sourceTree = "<group>"; };
+		F4E1C7D4C7FF5D70121EFD03 /* FamilySelectionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilySelectionStore.swift; sourceTree = "<group>"; };
+		9AF92878A089E483D346BD31 /* LockState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockState.swift; sourceTree = "<group>"; };
+		4A3D845056DB431774DAE7A8 /* ParentLockLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentLockLog.swift; sourceTree = "<group>"; };
+		FBC05C83F0E7057E49110EC3 /* PendingCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingCommand.swift; sourceTree = "<group>"; };
+		E3957D2CFC3AC251A8900FFA /* SharedConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedConstants.swift; sourceTree = "<group>"; };
+		89C83AA79296255139E0BC5D /* ShieldService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldService.swift; sourceTree = "<group>"; };
+		A59F9C5C8D1CD6ECEE25600F /* TimedUnlockScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimedUnlockScheduler.swift; sourceTree = "<group>"; };
+		E7CC712F68768A727877F743 /* ParentLockShared.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ParentLockShared.entitlements; sourceTree = "<group>"; };
+		18166F1A693CA222BFF4C8DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		56E8BAF151E4055385D60EB9 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		D3DCEB86A5079A389431F8FB /* AppRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRootView.swift; sourceTree = "<group>"; };
+		3ED0FD4259D18EF1784FF6B0 /* ParentLockApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentLockApp.swift; sourceTree = "<group>"; };
+		E91010EA5DBBE4A4299D2DF0 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		53B94ABD899A93936EDDDE62 /* AlwaysAllowedPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlwaysAllowedPickerView.swift; sourceTree = "<group>"; };
+		F10ADDACF0FCFA9F5AF23C26 /* ChildHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildHomeView.swift; sourceTree = "<group>"; };
+		91067E99F69DAE57C65F0F41 /* ChildSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildSettingsView.swift; sourceTree = "<group>"; };
+		C85728554339E120754E0DF6 /* FamilyAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyAuthView.swift; sourceTree = "<group>"; };
+		03404DD38143C3399AB3353A /* UnlockRequestButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockRequestButton.swift; sourceTree = "<group>"; };
+		B4EF9C9F7F74271C4E28BFEC /* RolePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RolePickerView.swift; sourceTree = "<group>"; };
+		FDB273ED735A1A8DF960160C /* PairingCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingCodeView.swift; sourceTree = "<group>"; };
+		774B4133862EADB435E7BB4E /* QRScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerView.swift; sourceTree = "<group>"; };
+		79D94B2824049D5E3F4B3721 /* RedeemCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedeemCodeView.swift; sourceTree = "<group>"; };
+		C8B72188B9BE0BB250581E85 /* ChildDeviceCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildDeviceCard.swift; sourceTree = "<group>"; };
+		00AD556AF35D3BE122AD1687 /* CommandButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandButtons.swift; sourceTree = "<group>"; };
+		1A339D50E74BFACB9B50376B /* ParentHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentHomeView.swift; sourceTree = "<group>"; };
+		4760F31664F27DDDE0240EFA /* ParentSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentSettingsView.swift; sourceTree = "<group>"; };
+		213C65E49E3A78BB45B39380 /* UnlockRequestInbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockRequestInbox.swift; sourceTree = "<group>"; };
+		AC896419975CB9087D158CE5 /* StatusPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusPill.swift; sourceTree = "<group>"; };
+		B168B35E5A566FAAB304A66D /* Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
+		BBDF223039F54D433764D08A /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		05ED35120C2222E9E115D05A /* Family.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Family.swift; sourceTree = "<group>"; };
+		6F9DACFA8996FB2330DC6748 /* FirestoreDecoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDecoding.swift; sourceTree = "<group>"; };
+		A165FDC4817E11CB8A2C7957 /* UnlockRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockRequest.swift; sourceTree = "<group>"; };
+		FC5A221452D4D65931A17ED3 /* UserRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRole.swift; sourceTree = "<group>"; };
+		26FD9459378EB071AA28629E /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		5C1389222BE9C3D29185FC83 /* BackgroundRefreshService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshService.swift; sourceTree = "<group>"; };
+		F0278C75436F820E9B02643F /* CommandApplier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandApplier.swift; sourceTree = "<group>"; };
+		70107B872EE268FFFCADED65 /* CommandService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandService.swift; sourceTree = "<group>"; };
+		50B2AF4656B165CBC3C780BF /* DeviceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceService.swift; sourceTree = "<group>"; };
+		E326AD68704490DE50273B02 /* FamilyControlsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyControlsService.swift; sourceTree = "<group>"; };
+		780C9A3283BB7AFEA4B6267A /* FamilyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyService.swift; sourceTree = "<group>"; };
+		48095BBA6C917EAB5E538D3A /* ParentLockError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentLockError.swift; sourceTree = "<group>"; };
+		1CFD00FF6BC3CC29A44744F1 /* PushService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushService.swift; sourceTree = "<group>"; };
+		6CD62A3CC17835AFD721403C /* QRCodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeService.swift; sourceTree = "<group>"; };
+		37EABDE90E8FA62952AB6C53 /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
+		A7C87DFFD41BC30C3FAA1C4C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		19C3C4F579282AFCD9CB29E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CF1A179A785FD760EC33CC9B /* ParentLock.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ParentLock.entitlements; sourceTree = "<group>"; };
+		BFFD048F16DDDE319B790FB3 /* GoogleService-Info.plist.example */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist.example"; sourceTree = "<group>"; };
+		76F448351857E5E0EF623183 /* DeviceActivityMonitorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceActivityMonitorExtension.swift; sourceTree = "<group>"; };
+		8B2B919438328C83DA1A5D9A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D57BDE32405EE5C24A9A6828 /* ParentLockMonitor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ParentLockMonitor.entitlements; sourceTree = "<group>"; };
+		9713683F57E3630BC241664F /* ShieldConfigurationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldConfigurationExtension.swift; sourceTree = "<group>"; };
+		C201894EB3F59DDD64D25065 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EFD86FDFAF3D91203B8F2478 /* ParentLockShieldConfig.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ParentLockShieldConfig.entitlements; sourceTree = "<group>"; };
+		8223D1A7EDCCB6C159FAE22D /* ShieldActionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldActionExtension.swift; sourceTree = "<group>"; };
+		1B00CC848BA68C53C4273B3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		097AFE6E17714ACC83885A39 /* ParentLockShieldAction.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ParentLockShieldAction.entitlements; sourceTree = "<group>"; };
+		060AB8185C0DF3608FDB8F51 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		D8C184724CF2FD5122AFA733 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B3ACF5116B4AA307C6692600 /* ParentLockNotificationService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ParentLockNotificationService.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D304B2523CC95104879119EE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1589E94B06A4C2D949EDF8D2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CD7133CA3C08190D22365650,
+				DF9F1D5BF5650DD77CBE770A,
+				DC70013DC7C50726B321EEBC,
+				C2B67A5458858C0125431E34,
+				325B104F0EC13D70FEB3BBF3,
+				05B6CC7FFB1173EBCD6B7E7D,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5F11060A0438A42DD0225420 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01B408E0C1FFADF607622360,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD40F0623ABAB69BB61CB2B9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E3A5128968C4FF9082650B1,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D5FE6FF03C196419DD9E9673 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA3161A5290141B296993AED,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		44D3EC73592DACBB9D5A6F77 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8E5A57F2D8527605A85862A9,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8ED7649B55943458E7EBEC52 /* ParentLockShared */ = {
+			isa = PBXGroup;
+			children = (
+				ADEEAEF0EAC4255DC4667164,
+				975F9720E6BBA900BF6FDBE0,
+				F4E1C7D4C7FF5D70121EFD03,
+				9AF92878A089E483D346BD31,
+				4A3D845056DB431774DAE7A8,
+				FBC05C83F0E7057E49110EC3,
+				E3957D2CFC3AC251A8900FFA,
+				89C83AA79296255139E0BC5D,
+				A59F9C5C8D1CD6ECEE25600F,
+				E7CC712F68768A727877F743,
+			);
+			path = ParentLockShared;
+			sourceTree = "<group>";
+		};
+		305599C292F57A6F66096900 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				18166F1A693CA222BFF4C8DD,
+				56E8BAF151E4055385D60EB9,
+				D3DCEB86A5079A389431F8FB,
+				3ED0FD4259D18EF1784FF6B0,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		0E7C5E1D5FA272C5AA8BCE40 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				E91010EA5DBBE4A4299D2DF0,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		8FD3ECA97814A0933ADE43B4 /* Child */ = {
+			isa = PBXGroup;
+			children = (
+				53B94ABD899A93936EDDDE62,
+				F10ADDACF0FCFA9F5AF23C26,
+				91067E99F69DAE57C65F0F41,
+				C85728554339E120754E0DF6,
+				03404DD38143C3399AB3353A,
+			);
+			path = Child;
+			sourceTree = "<group>";
+		};
+		3134860D5392E1D65B91404B /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				B4EF9C9F7F74271C4E28BFEC,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		D4E72AB96FEE2BC1160A1EE5 /* Pairing */ = {
+			isa = PBXGroup;
+			children = (
+				FDB273ED735A1A8DF960160C,
+				774B4133862EADB435E7BB4E,
+				79D94B2824049D5E3F4B3721,
+			);
+			path = Pairing;
+			sourceTree = "<group>";
+		};
+		8F821685A6E05F333F89038A /* Parent */ = {
+			isa = PBXGroup;
+			children = (
+				C8B72188B9BE0BB250581E85,
+				00AD556AF35D3BE122AD1687,
+				1A339D50E74BFACB9B50376B,
+				4760F31664F27DDDE0240EFA,
+				213C65E49E3A78BB45B39380,
+			);
+			path = Parent;
+			sourceTree = "<group>";
+		};
+		5E66CFF924D47023783491CB /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				AC896419975CB9087D158CE5,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		D6CAE2E99CBB04D24FDA714C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B168B35E5A566FAAB304A66D,
+				BBDF223039F54D433764D08A,
+				05ED35120C2222E9E115D05A,
+				6F9DACFA8996FB2330DC6748,
+				A165FDC4817E11CB8A2C7957,
+				FC5A221452D4D65931A17ED3,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		D391ACCFBF45BDBB6547D399 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A7C87DFFD41BC30C3FAA1C4C,
+				19C3C4F579282AFCD9CB29E9,
+				CF1A179A785FD760EC33CC9B,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		9734644D611E9EA23BEC9537 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				26FD9459378EB071AA28629E,
+				5C1389222BE9C3D29185FC83,
+				F0278C75436F820E9B02643F,
+				70107B872EE268FFFCADED65,
+				50B2AF4656B165CBC3C780BF,
+				E326AD68704490DE50273B02,
+				780C9A3283BB7AFEA4B6267A,
+				48095BBA6C917EAB5E538D3A,
+				1CFD00FF6BC3CC29A44744F1,
+				6CD62A3CC17835AFD721403C,
+				37EABDE90E8FA62952AB6C53,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		2D54756F09738580956CE611 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				0E7C5E1D5FA272C5AA8BCE40,
+				8FD3ECA97814A0933ADE43B4,
+				3134860D5392E1D65B91404B,
+				D4E72AB96FEE2BC1160A1EE5,
+				8F821685A6E05F333F89038A,
+				5E66CFF924D47023783491CB,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		0F72ABC4F247E56B8C760E6D /* ParentLock */ = {
+			isa = PBXGroup;
+			children = (
+				BFFD048F16DDDE319B790FB3,
+				305599C292F57A6F66096900,
+				D6CAE2E99CBB04D24FDA714C,
+				D391ACCFBF45BDBB6547D399,
+				9734644D611E9EA23BEC9537,
+				2D54756F09738580956CE611,
+			);
+			path = ParentLock;
+			sourceTree = "<group>";
+		};
+		E5D00D64C15276BAE93AB0B0 /* ParentLockMonitor */ = {
+			isa = PBXGroup;
+			children = (
+				76F448351857E5E0EF623183,
+				8B2B919438328C83DA1A5D9A,
+				D57BDE32405EE5C24A9A6828,
+			);
+			path = ParentLockMonitor;
+			sourceTree = "<group>";
+		};
+		6475178E64A181153D1AA160 /* ParentLockShieldConfig */ = {
+			isa = PBXGroup;
+			children = (
+				9713683F57E3630BC241664F,
+				C201894EB3F59DDD64D25065,
+				EFD86FDFAF3D91203B8F2478,
+			);
+			path = ParentLockShieldConfig;
+			sourceTree = "<group>";
+		};
+		6277CF6D70D11879808BB484 /* ParentLockShieldAction */ = {
+			isa = PBXGroup;
+			children = (
+				8223D1A7EDCCB6C159FAE22D,
+				1B00CC848BA68C53C4273B3A,
+				097AFE6E17714ACC83885A39,
+			);
+			path = ParentLockShieldAction;
+			sourceTree = "<group>";
+		};
+		6A99F65F6F251B012C059286 /* ParentLockNotificationService */ = {
+			isa = PBXGroup;
+			children = (
+				060AB8185C0DF3608FDB8F51,
+				D8C184724CF2FD5122AFA733,
+				B3ACF5116B4AA307C6692600,
+			);
+			path = ParentLockNotificationService;
+			sourceTree = "<group>";
+		};
+		43931CF8D8FF624E4C75AE32 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1A051A37FA6B3044CC67E32A,
+				355BFC7E8267DCF536F5968D,
+				B464FE2AC1FC0F06ABA5AA0A,
+				464336C1D42A2AE30C5B96D4,
+				130EA0EB7C30BA71DDBA069D,
+				61770682D7D9FEC0E4120C9E,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		361FF3508AF23F4E0CB329EA = {
+			isa = PBXGroup;
+			children = (
+				0F72ABC4F247E56B8C760E6D,
+				8ED7649B55943458E7EBEC52,
+				E5D00D64C15276BAE93AB0B0,
+				6475178E64A181153D1AA160,
+				6277CF6D70D11879808BB484,
+				6A99F65F6F251B012C059286,
+				43931CF8D8FF624E4C75AE32,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1A8F9400F0D4D797EA942D61 /* ParentLockShared */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5950FE647EDBCE0AE4C31D68;
+			buildPhases = (
+				1960E0F011C92D0C8E63BA89,
+				D304B2523CC95104879119EE,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ParentLockShared;
+			productName = ParentLockShared;
+			productReference = 355BFC7E8267DCF536F5968D;
+			productType = "com.apple.product-type.framework";
+		};
+		0D2B873E87BDB90ABB865A27 /* ParentLock */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 26586BC51097A34099F71F38;
+			buildPhases = (
+				C404F5207D0C6C3653DB84B6,
+				1589E94B06A4C2D949EDF8D2,
+				F00C9990AD785AC56BAF1F82,
+				63D962C53EEED3979E1F5E39,
+				8C5C4A83FA21F59AAF524B9A,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				880EB8E92C79663EBB010DCE,
+				5C3FAE08224D5FBE8A4438FD,
+				81B59F906C8BA1F5C67E0BFE,
+				E8CC1209557D09E33289B28C,
+				644D6E61DB263F4BF59A2B92,
+			);
+			name = ParentLock;
+			packageProductDependencies = (
+				7C19287A5449DD32880C1A11,
+				82A02836E3960805D86F720E,
+				17DFCC27A6F5AFF2E6EA71A9,
+				A316B566103B93B4B84D80BF,
+				A2E7194CEC1016A5637A5E9B,
+			);
+			productName = ParentLock;
+			productReference = 1A051A37FA6B3044CC67E32A;
+			productType = "com.apple.product-type.application";
+		};
+		0F831DDF3234BB836A56DF1A /* ParentLockMonitor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D52845FEB1D364CBBCE93AF4;
+			buildPhases = (
+				8609C101ED6025451A1F0FCF,
+				5F11060A0438A42DD0225420,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BDC4F1075CD9F1FE06B68460,
+			);
+			name = ParentLockMonitor;
+			productName = ParentLockMonitor;
+			productReference = B464FE2AC1FC0F06ABA5AA0A;
+			productType = "com.apple.product-type.app-extension";
+		};
+		C5DEA84074D99CD3102F391D /* ParentLockShieldConfig */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 36C4177ECA49332F5A13DC3A;
+			buildPhases = (
+				F6A3A39268B5D34D8205A80A,
+				DD40F0623ABAB69BB61CB2B9,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				514CD2401A4A670326796693,
+			);
+			name = ParentLockShieldConfig;
+			productName = ParentLockShieldConfig;
+			productReference = 464336C1D42A2AE30C5B96D4;
+			productType = "com.apple.product-type.app-extension";
+		};
+		45E3E1FC630EC309A6F702D7 /* ParentLockShieldAction */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3546ABE326105C5100D187CA;
+			buildPhases = (
+				E11C29D9CE105E3A098F7B03,
+				D5FE6FF03C196419DD9E9673,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				88F002C76FBF1423DF6E45A9,
+			);
+			name = ParentLockShieldAction;
+			productName = ParentLockShieldAction;
+			productReference = 130EA0EB7C30BA71DDBA069D;
+			productType = "com.apple.product-type.app-extension";
+		};
+		F450B6416EBDA8398BF8BDD7 /* ParentLockNotificationService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1B470F6258A543922E2A97C0;
+			buildPhases = (
+				F3B1747C370B8ED723041EEE,
+				44D3EC73592DACBB9D5A6F77,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				88D9349B7649088F92D39B9E,
+			);
+			name = ParentLockNotificationService;
+			productName = ParentLockNotificationService;
+			productReference = 61770682D7D9FEC0E4120C9E;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		98F54143AB4E86B28C3AFEE0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+			};
+			buildConfigurationList = E6442D5C255F98B0A6EC22E3;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 361FF3508AF23F4E0CB329EA;
+			packageReferences = (
+				3546E37E4134D4251E13375A /* firebase-ios-sdk */,
+			);
+			productRefGroup = 43931CF8D8FF624E4C75AE32;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0D2B873E87BDB90ABB865A27 /* ParentLock */,
+				1A8F9400F0D4D797EA942D61 /* ParentLockShared */,
+				0F831DDF3234BB836A56DF1A /* ParentLockMonitor */,
+				C5DEA84074D99CD3102F391D /* ParentLockShieldConfig */,
+				45E3E1FC630EC309A6F702D7 /* ParentLockShieldAction */,
+				F450B6416EBDA8398BF8BDD7 /* ParentLockNotificationService */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F00C9990AD785AC56BAF1F82 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A2CB5B15394489700D80A352,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1960E0F011C92D0C8E63BA89 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5C1A06D3E581C61892D85D0D,
+				7E14098D897718A3BDC56D66,
+				7F6E17864A1DE690EC7C784F,
+				F31A9F6A3D87FF294292B735,
+				DCBF093E0AE7A692E20C9A30,
+				2BB7741EA770E473DEC2206D,
+				D5D63844767FAC62023E0336,
+				FEF71D2311E58EE88DF9689B,
+				76FF6B3FB6E383A526B05712,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C404F5207D0C6C3653DB84B6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C2A3A3454C9929CF03887240,
+				033C7C676044E1CDFEB246E7,
+				E47C899A8E22509555E63D4A,
+				D4750FA19C0630A6C7E8CA41,
+				89B517E50900F09189A851A5,
+				0BF6B76BB95AEBC7C36CCFF5,
+				FA57EF7640A6B3F6D27AE14E,
+				73AB7015204C7E2623B429B2,
+				570CDCA30B2CF3029E6AB4D4,
+				6C9F3B620C37B9DC8651DD08,
+				A15F36AD6F628E4A3B3E0BC2,
+				037BAB8A5875C8E96681C767,
+				8CD559FC9AE4DF8E332E6474,
+				35C0BCA8CDD397CE87607687,
+				FA6D22087BCBF41BC9C30C3C,
+				5331BE34A6A461947FC5709D,
+				5D989E5E4899B9FE6CD8BA9D,
+				196313F3E2BB94E4316A038F,
+				D2F4A11595579F1A681BF5D6,
+				B31E1A376548A2D38E198466,
+				B04B705DBD67767FC8311C9C,
+				40B251992A32619E7469EBAD,
+				0DCD2E382F4DFE212C095686,
+				4327121C368C20B94633900D,
+				A091329CD7C79B5E458D53FB,
+				A97B3652052F24AC68F29410,
+				85E2DE173D9A957930185E49,
+				82CC62C40ED7434605A926E8,
+				A8D39CCAE2D559F35EE65854,
+				7A9D30F3D0BE6E830F082865,
+				15C8D5662DD1A5FD1412CDD4,
+				9397B10B8C54D3C932E6F230,
+				293EEA72FE7C1832023A915F,
+				318949FEB47E391936D3AA23,
+				DFD87094569FD288E8ED00AE,
+				50399C67304055A844961E90,
+				3BF7B361F6DC14A3C8FF4580,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8609C101ED6025451A1F0FCF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7734DD99635484E93C6090A4,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F6A3A39268B5D34D8205A80A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8FB04C5F665718A6279D3D45,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E11C29D9CE105E3A098F7B03 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04B1E231849B03F5C9A2ED2B,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F3B1747C370B8ED723041EEE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				537730CC2EAEAC0CF79D490B,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		880EB8E92C79663EBB010DCE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1A8F9400F0D4D797EA942D61 /* ParentLockShared */;
+			targetProxy = 12FFBCD4B28EA9D53E6A94AF /* PBXContainerItemProxy */;
+		};
+		5C3FAE08224D5FBE8A4438FD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0F831DDF3234BB836A56DF1A /* ParentLockMonitor */;
+			targetProxy = 94277CC0A6F375C207A70EA7 /* PBXContainerItemProxy */;
+		};
+		81B59F906C8BA1F5C67E0BFE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C5DEA84074D99CD3102F391D /* ParentLockShieldConfig */;
+			targetProxy = 9CC9B07566572F69696F6D3E /* PBXContainerItemProxy */;
+		};
+		E8CC1209557D09E33289B28C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 45E3E1FC630EC309A6F702D7 /* ParentLockShieldAction */;
+			targetProxy = E6803F73FC91E5A259566A44 /* PBXContainerItemProxy */;
+		};
+		644D6E61DB263F4BF59A2B92 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F450B6416EBDA8398BF8BDD7 /* ParentLockNotificationService */;
+			targetProxy = D0348F6BFC387315FAFD9F5E /* PBXContainerItemProxy */;
+		};
+		BDC4F1075CD9F1FE06B68460 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1A8F9400F0D4D797EA942D61 /* ParentLockShared */;
+			targetProxy = C7529E9251ADFF9285D8716B /* PBXContainerItemProxy */;
+		};
+		514CD2401A4A670326796693 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1A8F9400F0D4D797EA942D61 /* ParentLockShared */;
+			targetProxy = E8FF293FDC94FB28A6A4A5B0 /* PBXContainerItemProxy */;
+		};
+		88F002C76FBF1423DF6E45A9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1A8F9400F0D4D797EA942D61 /* ParentLockShared */;
+			targetProxy = 3C53552C11A9AC54B158E152 /* PBXContainerItemProxy */;
+		};
+		88D9349B7649088F92D39B9E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1A8F9400F0D4D797EA942D61 /* ParentLockShared */;
+			targetProxy = 31C65F9CD91EA1660BA30F33 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		7BB58A6E2F0F2FEF79E3F732 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.10;
+				TARGETED_DEVICE_FAMILY = 1,2;
+			};
+			name = Debug;
+		};
+		7CDF6407D9ABB0ED5E57BC25 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.10;
+				TARGETED_DEVICE_FAMILY = 1,2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		719FD93D6401C72999E52DBA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = ParentLockShared/ParentLockShared.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GENERATE_INFOPLIST_FILE = YES;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = mh_dylib;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.parentlock.shared;
+				PRODUCT_NAME = ParentLockShared;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.10;
+				TARGETED_DEVICE_FAMILY = 1,2;
+			};
+			name = Debug;
+		};
+		DF515FA7026F2FD309D725A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = ParentLockShared/ParentLockShared.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = mh_dylib;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.parentlock.shared;
+				PRODUCT_NAME = ParentLockShared;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.10;
+				TARGETED_DEVICE_FAMILY = 1,2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C79D56E4B3A25815075C4ED5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = ParentLock/Resources/ParentLock.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ParentLock/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.parentlock.app;
+				PRODUCT_NAME = ParentLock;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.10;
+				TARGETED_DEVICE_FAMILY = 1,2;
+			};
+			name = Debug;
+		};
+		E6CC0987B7D40B18CF869991 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = ParentLock/Resources/ParentLock.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ParentLock/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.parentlock.app;
+				PRODUCT_NAME = ParentLock;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.10;
+				TARGETED_DEVICE_FAMILY = 1,2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		4AA5D094FE5CF44D6C905831 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = ParentLockMonitor/ParentLockMonitor.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ParentLockMonitor/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.parentlock.app.monitor;
+				PRODUCT_NAME = ParentLockMonitor;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.10;
+				TARGETED_DEVICE_FAMILY = 1,2;
+			};
+			name = Debug;
+		};
+		42944DFCEEDDCF7645C25353 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = ParentLockMonitor/ParentLockMonitor.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ParentLockMonitor/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.parentlock.app.monitor;
+				PRODUCT_NAME = ParentLockMonitor;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.10;
+				TARGETED_DEVICE_FAMILY = 1,2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		371E31BE4F98B8C086580EB6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = ParentLockShieldConfig/ParentLockShieldConfig.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ParentLockShieldConfig/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.parentlock.app.shieldconfig;
+				PRODUCT_NAME = ParentLockShieldConfig;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.10;
+				TARGETED_DEVICE_FAMILY = 1,2;
+			};
+			name = Debug;
+		};
+		4DFE5B07412DA3BED6B7B876 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = ParentLockShieldConfig/ParentLockShieldConfig.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ParentLockShieldConfig/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.parentlock.app.shieldconfig;
+				PRODUCT_NAME = ParentLockShieldConfig;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.10;
+				TARGETED_DEVICE_FAMILY = 1,2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		085C3FB50D78BB75262FE970 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = ParentLockShieldAction/ParentLockShieldAction.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ParentLockShieldAction/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.parentlock.app.shieldaction;
+				PRODUCT_NAME = ParentLockShieldAction;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.10;
+				TARGETED_DEVICE_FAMILY = 1,2;
+			};
+			name = Debug;
+		};
+		ACC7F7911CD0A8F72144DD6E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = ParentLockShieldAction/ParentLockShieldAction.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ParentLockShieldAction/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.parentlock.app.shieldaction;
+				PRODUCT_NAME = ParentLockShieldAction;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.10;
+				TARGETED_DEVICE_FAMILY = 1,2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F53C5C00FBD78F0BD5157F1A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = ParentLockNotificationService/ParentLockNotificationService.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ParentLockNotificationService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.parentlock.app.notificationservice;
+				PRODUCT_NAME = ParentLockNotificationService;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.10;
+				TARGETED_DEVICE_FAMILY = 1,2;
+			};
+			name = Debug;
+		};
+		4163505E6071478B60AB8721 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = ParentLockNotificationService/ParentLockNotificationService.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ParentLockNotificationService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.parentlock.app.notificationservice;
+				PRODUCT_NAME = ParentLockNotificationService;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.10;
+				TARGETED_DEVICE_FAMILY = 1,2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E6442D5C255F98B0A6EC22E3 /* Build configuration list for PBXProject */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7BB58A6E2F0F2FEF79E3F732 /* Debug */,
+				7CDF6407D9ABB0ED5E57BC25 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5950FE647EDBCE0AE4C31D68 /* Build configuration list for ParentLockShared */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				719FD93D6401C72999E52DBA /* Debug */,
+				DF515FA7026F2FD309D725A8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		26586BC51097A34099F71F38 /* Build configuration list for ParentLock */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C79D56E4B3A25815075C4ED5 /* Debug */,
+				E6CC0987B7D40B18CF869991 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D52845FEB1D364CBBCE93AF4 /* Build configuration list for ParentLockMonitor */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4AA5D094FE5CF44D6C905831 /* Debug */,
+				42944DFCEEDDCF7645C25353 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		36C4177ECA49332F5A13DC3A /* Build configuration list for ParentLockShieldConfig */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				371E31BE4F98B8C086580EB6 /* Debug */,
+				4DFE5B07412DA3BED6B7B876 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3546ABE326105C5100D187CA /* Build configuration list for ParentLockShieldAction */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				085C3FB50D78BB75262FE970 /* Debug */,
+				ACC7F7911CD0A8F72144DD6E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1B470F6258A543922E2A97C0 /* Build configuration list for ParentLockNotificationService */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F53C5C00FBD78F0BD5157F1A /* Debug */,
+				4163505E6071478B60AB8721 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3546E37E4134D4251E13375A /* firebase-ios-sdk */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7C19287A5449DD32880C1A11 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3546E37E4134D4251E13375A /* firebase-ios-sdk */;
+			productName = FirebaseAuth;
+		};
+		82A02836E3960805D86F720E /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3546E37E4134D4251E13375A /* firebase-ios-sdk */;
+			productName = FirebaseCore;
+		};
+		17DFCC27A6F5AFF2E6EA71A9 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3546E37E4134D4251E13375A /* firebase-ios-sdk */;
+			productName = FirebaseFirestore;
+		};
+		A316B566103B93B4B84D80BF /* FirebaseFunctions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3546E37E4134D4251E13375A /* firebase-ios-sdk */;
+			productName = FirebaseFunctions;
+		};
+		A2E7194CEC1016A5637A5E9B /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3546E37E4134D4251E13375A /* firebase-ios-sdk */;
+			productName = FirebaseMessaging;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+}
