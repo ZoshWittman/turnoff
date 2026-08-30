@@ -1,0 +1,63 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Xcode
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+xcuserdata/
+*.moved-aside
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+*.playground
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Package.resolved
+
+# CocoaPods
+Pods/
+
+# Firebase / secrets
+GoogleService-Info.plist
+**/GoogleService-Info.plist
+!**/GoogleService-Info.plist.example
+serviceAccount*.json
+*-firebase-adminsdk-*.json
+.env
+.env.*
+!.env.example
+
+# Node / Cloud Functions
+node_modules/
+backend/functions/lib/
+backend/functions/lib-test/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+pubsub-debug.log
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# Coverage / test
+coverage/
+.nyc_output/
+
+# Local tooling
+.vercel
+.turbo
