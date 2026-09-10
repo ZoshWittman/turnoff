@@ -1,0 +1,9 @@
+node_modules
+.next
+.git
+android
+ios
+coverage
+*.md
+.env*
+!/.env.example
