@@ -59,10 +59,10 @@ let loading = false;
 let progress = 0;
 let lastError: string | null = null;
 let playToken = 0;
-let activeContext: AudioContext | null = null;
-let activeSources: AudioBufferSourceNode[] = [];
 let unlockedContext: AudioContext | null = null;
 let keepAliveSource: AudioBufferSourceNode | null = null;
+let activeAudio: HTMLAudioElement | null = null;
+let activeObjectUrl: string | null = null;
 let ortPinned = false;
 const listeners = new Set<StatusListener>();
 
@@ -187,7 +187,6 @@ function localWasmPaths(): { onnxWasm: string; piperData: string; piperWasm: str
 
 async function createSession(voiceId: string): Promise<PiperSession> {
   phase("create-session");
-  await resetPiperSingleton();
   await pinOnnxRuntimeToOneThread();
   const { TtsSession } = await loadPiperModule();
   const wasmPaths = localWasmPaths();
@@ -223,7 +222,8 @@ export function ensureNeuralEngine(voiceId = DEFAULT_NEURAL_VOICE_ID): Promise<P
   lastError = null;
   engineVoiceId = id;
   emit();
-  enginePromise = createSession(id)
+  enginePromise = resetPiperSingleton()
+    .then(() => createSession(id))
     .then((session) => {
       loading = false;
       progress = 1;
@@ -255,18 +255,17 @@ export function preloadNeuralEngine(): void {
 
 export function stopNeuralPlayback(): void {
   playToken += 1;
-  for (const source of activeSources) {
-    try {
-      source.stop();
-    } catch {
-      /* already stopped */
-    }
+  if (activeAudio) {
+    activeAudio.onended = null;
+    activeAudio.onerror = null;
+    activeAudio.pause();
+    activeAudio.removeAttribute("src");
+    activeAudio.load();
+    activeAudio = null;
   }
-  activeSources = [];
-  if (activeContext && activeContext !== unlockedContext) {
-    const ctx = activeContext;
-    activeContext = null;
-    void ctx.close().catch(() => undefined);
+  if (activeObjectUrl) {
+    URL.revokeObjectURL(activeObjectUrl);
+    activeObjectUrl = null;
   }
 }
 
@@ -300,38 +299,46 @@ export async function speakWithNeural(
       options.onEnd?.();
       return;
     }
-    phase("decode");
-    const ctx = getAudioContext();
-    if (ctx.state === "suspended") await ctx.resume();
-    if (ctx.state !== "running") {
-      throw new Error(`audio-${ctx.state}`);
-    }
-    activeContext = ctx;
-    const bytes = await blob.arrayBuffer();
-    const buffer = await ctx.decodeAudioData(bytes.slice(0));
-    if (token !== playToken) {
-      options.onEnd?.();
-      return;
-    }
-    const source = ctx.createBufferSource();
-    const gain = ctx.createGain();
+    phase("play");
     const rate = options.speed && Number.isFinite(options.speed) ? Math.min(1.2, Math.max(0.9, options.speed)) : 1;
-    source.buffer = buffer;
-    source.playbackRate.value = rate;
-    source.connect(gain);
-    gain.connect(ctx.destination);
+    const url = URL.createObjectURL(blob);
+    const audio = new Audio();
+    audio.preload = "auto";
+    audio.src = url;
+    audio.playbackRate = rate;
+    activeAudio = audio;
+    activeObjectUrl = url;
     let ended = false;
     const finish = () => {
       if (ended || token !== playToken) return;
       ended = true;
       phase("ended");
+      if (activeAudio === audio) {
+        activeAudio.onended = null;
+        activeAudio.onerror = null;
+        activeAudio = null;
+      }
+      if (activeObjectUrl === url) {
+        URL.revokeObjectURL(url);
+        activeObjectUrl = null;
+      }
       options.onEnd?.();
     };
-    source.onended = finish;
-    activeSources.push(source);
-    source.start();
+    audio.onended = finish;
+    audio.onerror = finish;
+    await Promise.race([
+      audio.play(),
+      new Promise<void>((_, reject) => {
+        window.setTimeout(() => reject(new Error("play-timeout")), 4000);
+      }),
+    ]);
+    if (token !== playToken) {
+      finish();
+      return;
+    }
     phase("playing");
-    window.setTimeout(finish, Math.min(20000, (buffer.duration / rate) * 1000 + 800));
+    const durationMs = Number.isFinite(audio.duration) ? audio.duration * 1000 / rate : 8000;
+    window.setTimeout(finish, Math.min(20000, durationMs + 800));
   } catch (error) {
     stopNeuralPlayback();
     const name = error instanceof Error ? error.name : "Error";
