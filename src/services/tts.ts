@@ -368,9 +368,17 @@ function speakBrowser(text: string, onEnd?: () => void): void {
   utterance.pitch = profile.pitch;
   utterance.lang = profile.lang || "en-US";
   if (voice) utterance.voice = voice;
-  utterance.onend = () => onEnd?.();
-  utterance.onerror = () => onEnd?.();
+  let ended = false;
+  const finish = () => {
+    if (ended) return;
+    ended = true;
+    onEnd?.();
+  };
+  utterance.onend = finish;
+  utterance.onerror = finish;
   window.speechSynthesis.speak(utterance);
+  const estimateMs = Math.min(20000, 800 + text.length * 60);
+  window.setTimeout(finish, browserVoices().length === 0 ? 400 : estimateMs);
 }
 
 async function speakNow(text: string, onEnd?: () => void): Promise<void> {

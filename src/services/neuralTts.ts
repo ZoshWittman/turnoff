@@ -35,6 +35,7 @@ interface PiperModule {
       voiceId: string;
       progress?: (info: { url?: string; loaded?: number; total?: number }) => void;
       logger?: (text: string) => void;
+      wasmPaths?: { onnxWasm: string; piperData: string; piperWasm: string };
     }) => Promise<PiperSession>;
   };
 }
@@ -61,8 +62,15 @@ let playToken = 0;
 let activeContext: AudioContext | null = null;
 let activeSources: AudioBufferSourceNode[] = [];
 let unlockedContext: AudioContext | null = null;
+let keepAliveSource: AudioBufferSourceNode | null = null;
 let ortPinned = false;
 const listeners = new Set<StatusListener>();
+
+function phase(name: string): void {
+  if (typeof console !== "undefined" && typeof console.debug === "function") {
+    console.debug("[WonderFact TTS] phase:", name);
+  }
+}
 
 function emit(): void {
   for (const listener of listeners) listener(loading, progress, lastError);
@@ -101,16 +109,26 @@ function getAudioContext(): AudioContext {
   return unlockedContext;
 }
 
+function startKeepAlive(ctx: AudioContext): void {
+  if (keepAliveSource) return;
+  const buffer = ctx.createBuffer(1, Math.max(1, ctx.sampleRate), ctx.sampleRate);
+  const source = ctx.createBufferSource();
+  const gain = ctx.createGain();
+  gain.gain.value = 0;
+  source.buffer = buffer;
+  source.loop = true;
+  source.connect(gain);
+  gain.connect(ctx.destination);
+  source.start();
+  keepAliveSource = source;
+}
+
 export function unlockNeuralAudio(): void {
   if (!isBrowser()) return;
   try {
     const ctx = getAudioContext();
     if (ctx.state === "suspended") void ctx.resume();
-    const buffer = ctx.createBuffer(1, 1, 22050);
-    const source = ctx.createBufferSource();
-    source.buffer = buffer;
-    source.connect(ctx.destination);
-    source.start();
+    startKeepAlive(ctx);
   } catch {
     /* ignore */
   }
@@ -158,20 +176,40 @@ async function resetPiperSingleton(): Promise<void> {
   }
 }
 
+function localWasmPaths(): { onnxWasm: string; piperData: string; piperWasm: string } {
+  const origin = window.location.origin;
+  return {
+    onnxWasm: `${origin}/ort/`,
+    piperData: `${origin}/piper/piper_phonemize.data`,
+    piperWasm: `${origin}/piper/piper_phonemize.wasm`,
+  };
+}
+
 async function createSession(voiceId: string): Promise<PiperSession> {
+  phase("create-session");
+  await resetPiperSingleton();
   await pinOnnxRuntimeToOneThread();
   const { TtsSession } = await loadPiperModule();
+  const wasmPaths = localWasmPaths();
+  TtsSession.WASM_LOCATIONS.onnxWasm = wasmPaths.onnxWasm;
+  TtsSession.WASM_LOCATIONS.piperData = wasmPaths.piperData;
+  TtsSession.WASM_LOCATIONS.piperWasm = wasmPaths.piperWasm;
   return TtsSession.create({
     voiceId,
+    wasmPaths,
+    logger: (text) => {
+      const line = String(text ?? "").slice(0, 80);
+      if (line && typeof console !== "undefined" && typeof console.debug === "function") {
+        console.debug("[WonderFact TTS]", line);
+      }
+    },
     progress: (info) => {
       const loaded = info.loaded ?? 0;
       const total = info.total ?? 0;
       if (total > 0) progress = Math.min(0.99, loaded / total);
       emit();
       const file = fileNameFromUrl(info.url);
-      if (file && typeof console !== "undefined" && typeof console.debug === "function") {
-        console.debug("[WonderFact TTS] loading:", file.slice(0, 80));
-      }
+      if (file) phase(`loading:${file.slice(0, 40)}`);
     },
   });
 }
@@ -191,6 +229,7 @@ export function ensureNeuralEngine(voiceId = DEFAULT_NEURAL_VOICE_ID): Promise<P
       progress = 1;
       lastError = null;
       emit();
+      phase("session-ready");
       return session;
     })
     .catch(async (error) => {
@@ -250,13 +289,23 @@ export async function speakWithNeural(
       options.onEnd?.();
       return;
     }
-    const blob = await session.predict(text);
+    phase("predict");
+    const blob = await Promise.race([
+      session.predict(text),
+      new Promise<Blob>((_, reject) => {
+        window.setTimeout(() => reject(new Error("predict-timeout")), 45000);
+      }),
+    ]);
     if (token !== playToken) {
       options.onEnd?.();
       return;
     }
+    phase("decode");
     const ctx = getAudioContext();
     if (ctx.state === "suspended") await ctx.resume();
+    if (ctx.state !== "running") {
+      throw new Error(`audio-${ctx.state}`);
+    }
     activeContext = ctx;
     const bytes = await blob.arrayBuffer();
     const buffer = await ctx.decodeAudioData(bytes.slice(0));
@@ -271,12 +320,18 @@ export async function speakWithNeural(
     source.playbackRate.value = rate;
     source.connect(gain);
     gain.connect(ctx.destination);
-    source.onended = () => {
-      if (token !== playToken) return;
+    let ended = false;
+    const finish = () => {
+      if (ended || token !== playToken) return;
+      ended = true;
+      phase("ended");
       options.onEnd?.();
     };
+    source.onended = finish;
     activeSources.push(source);
     source.start();
+    phase("playing");
+    window.setTimeout(finish, Math.min(20000, (buffer.duration / rate) * 1000 + 800));
   } catch (error) {
     stopNeuralPlayback();
     const name = error instanceof Error ? error.name : "Error";

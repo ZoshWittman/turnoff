@@ -44,3 +44,7 @@ next-env.d.ts
 # native shells
 /android
 /ios
+
+# downloaded in-browser Piper / ONNX Runtime WASM
+/public/ort/
+/public/piper/

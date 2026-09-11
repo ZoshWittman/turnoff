@@ -1,3 +1,4 @@
+import path from "node:path";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -34,6 +35,10 @@ const nextConfig: NextConfig = {
         ...config.resolve.fallback,
         fs: false,
       };
+      config.module.rules.push({
+        test: /piper-o91UDS6e\.js$/,
+        loader: path.join(process.cwd(), "scripts/piper-browser-loader.cjs"),
+      });
     }
     return config;
   },
