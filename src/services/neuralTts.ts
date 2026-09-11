@@ -61,8 +61,7 @@ let lastError: string | null = null;
 let playToken = 0;
 let unlockedContext: AudioContext | null = null;
 let keepAliveSource: AudioBufferSourceNode | null = null;
-let activeAudio: HTMLAudioElement | null = null;
-let activeObjectUrl: string | null = null;
+let activeSources: AudioBufferSourceNode[] = [];
 let ortPinned = false;
 const listeners = new Set<StatusListener>();
 
@@ -176,6 +175,48 @@ async function resetPiperSingleton(): Promise<void> {
   }
 }
 
+function wavToAudioBuffer(ctx: AudioContext, bytes: ArrayBuffer): AudioBuffer {
+  const view = new DataView(bytes);
+  if (bytes.byteLength < 44) throw new Error("wav-short");
+  let offset = 12;
+  let channels = 1;
+  let sampleRate = 22050;
+  let bits = 16;
+  let dataOffset = -1;
+  let dataSize = 0;
+  while (offset + 8 <= view.byteLength) {
+    const id = String.fromCharCode(
+      view.getUint8(offset),
+      view.getUint8(offset + 1),
+      view.getUint8(offset + 2),
+      view.getUint8(offset + 3),
+    );
+    const size = view.getUint32(offset + 4, true);
+    const start = offset + 8;
+    if (id === "fmt ") {
+      channels = view.getUint16(start + 2, true) || 1;
+      sampleRate = view.getUint32(start + 4, true) || 22050;
+      bits = view.getUint16(start + 14, true);
+    } else if (id === "data") {
+      dataOffset = start;
+      dataSize = size;
+      break;
+    }
+    offset = start + size + (size % 2);
+  }
+  if (dataOffset < 0 || bits !== 16) throw new Error("wav-data");
+  const frameSize = channels * 2;
+  const frames = Math.floor(dataSize / frameSize);
+  const buffer = ctx.createBuffer(channels, Math.max(1, frames), sampleRate);
+  for (let channel = 0; channel < channels; channel += 1) {
+    const output = buffer.getChannelData(channel);
+    for (let i = 0; i < frames; i += 1) {
+      output[i] = view.getInt16(dataOffset + i * frameSize + channel * 2, true) / 32768;
+    }
+  }
+  return buffer;
+}
+
 function localWasmPaths(): { onnxWasm: string; piperData: string; piperWasm: string } {
   const origin = window.location.origin;
   return {
@@ -216,13 +257,17 @@ async function createSession(voiceId: string): Promise<PiperSession> {
 export function ensureNeuralEngine(voiceId = DEFAULT_NEURAL_VOICE_ID): Promise<PiperSession> {
   if (!isBrowser()) return Promise.reject(new Error("neural TTS is browser-only"));
   const id = NEURAL_VOICE_OPTIONS.some((item) => item.id === voiceId) ? voiceId : DEFAULT_NEURAL_VOICE_ID;
-  if (enginePromise && engineVoiceId === id) return enginePromise;
+  if (enginePromise && engineVoiceId === id) {
+    phase("reuse-session");
+    return enginePromise;
+  }
   loading = true;
   progress = 0.02;
   lastError = null;
+  const switching = Boolean(enginePromise);
   engineVoiceId = id;
   emit();
-  enginePromise = resetPiperSingleton()
+  enginePromise = (switching ? resetPiperSingleton() : Promise.resolve())
     .then(() => createSession(id))
     .then((session) => {
       loading = false;
@@ -255,18 +300,14 @@ export function preloadNeuralEngine(): void {
 
 export function stopNeuralPlayback(): void {
   playToken += 1;
-  if (activeAudio) {
-    activeAudio.onended = null;
-    activeAudio.onerror = null;
-    activeAudio.pause();
-    activeAudio.removeAttribute("src");
-    activeAudio.load();
-    activeAudio = null;
+  for (const source of activeSources) {
+    try {
+      source.stop();
+    } catch {
+      /* already stopped */
+    }
   }
-  if (activeObjectUrl) {
-    URL.revokeObjectURL(activeObjectUrl);
-    activeObjectUrl = null;
-  }
+  activeSources = [];
 }
 
 export async function speakWithNeural(
@@ -300,45 +341,34 @@ export async function speakWithNeural(
       return;
     }
     phase("play");
+    const ctx = getAudioContext();
+    startKeepAlive(ctx);
+    if (ctx.state === "suspended") await ctx.resume();
+    const bytes = await blob.arrayBuffer();
+    const buffer = wavToAudioBuffer(ctx, bytes);
+    if (token !== playToken) {
+      options.onEnd?.();
+      return;
+    }
+    const source = ctx.createBufferSource();
+    const gain = ctx.createGain();
     const rate = options.speed && Number.isFinite(options.speed) ? Math.min(1.2, Math.max(0.9, options.speed)) : 1;
-    const url = URL.createObjectURL(blob);
-    const audio = new Audio();
-    audio.preload = "auto";
-    audio.src = url;
-    audio.playbackRate = rate;
-    activeAudio = audio;
-    activeObjectUrl = url;
+    source.buffer = buffer;
+    source.playbackRate.value = rate;
+    source.connect(gain);
+    gain.connect(ctx.destination);
     let ended = false;
     const finish = () => {
       if (ended || token !== playToken) return;
       ended = true;
       phase("ended");
-      if (activeAudio === audio) {
-        activeAudio.onended = null;
-        activeAudio.onerror = null;
-        activeAudio = null;
-      }
-      if (activeObjectUrl === url) {
-        URL.revokeObjectURL(url);
-        activeObjectUrl = null;
-      }
       options.onEnd?.();
     };
-    audio.onended = finish;
-    audio.onerror = finish;
-    await Promise.race([
-      audio.play(),
-      new Promise<void>((_, reject) => {
-        window.setTimeout(() => reject(new Error("play-timeout")), 4000);
-      }),
-    ]);
-    if (token !== playToken) {
-      finish();
-      return;
-    }
+    source.onended = finish;
+    activeSources.push(source);
+    source.start();
     phase("playing");
-    const durationMs = Number.isFinite(audio.duration) ? audio.duration * 1000 / rate : 8000;
-    window.setTimeout(finish, Math.min(20000, durationMs + 800));
+    window.setTimeout(finish, Math.min(20000, (buffer.duration / rate) * 1000 + 800));
   } catch (error) {
     stopNeuralPlayback();
     const name = error instanceof Error ? error.name : "Error";
