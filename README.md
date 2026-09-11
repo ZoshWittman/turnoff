@@ -2,7 +2,7 @@
 
 A cross-platform trivia app for children ages 5–10. Kids browse bright fact cards, hear them read aloud, save favorites, and ask for brand-new facts. Grown-ups keep API keys behind a math + PIN lock.
 
-The app works immediately with a local library of 20 facts. Optional AI generation uses a parent-provided key (OpenAI, Anthropic, Gemini, xAI, OpenRouter, or Vercel AI Gateway).
+The app works immediately with a local library of 120+ facts. Optional AI generation uses a parent-provided key (OpenAI, Anthropic, Gemini, xAI, OpenRouter, or Vercel AI Gateway).
 
 ## Features
 
