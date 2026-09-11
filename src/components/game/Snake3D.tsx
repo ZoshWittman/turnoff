@@ -53,21 +53,21 @@ function SnakeHeadSvg({
         </filter>
       </defs>
       <path
-        d="M40 78 C18 78 8 62 8 44 C8 22 20 10 40 10 C60 10 72 22 72 44 C72 62 62 78 40 78Z"
+        d="M40 82 C16 78 6 58 10 38 C14 16 26 6 40 4 C56 2 74 16 72 40 C70 62 62 80 40 82Z"
         fill={`url(#${gid}-skin)`}
         filter={`url(#${gid}-soft)`}
       />
-      <ellipse cx="28" cy="22" rx="12" ry="7" fill="rgba(255,255,255,0.38)" />
-      <path d="M40 12 C36 4 34 1 32 0" stroke="#ef4444" strokeWidth="3.2" fill="none" strokeLinecap="round" />
-      <path d="M40 12 C44 4 48 -1 52 1" stroke="#ef4444" strokeWidth="3.2" fill="none" strokeLinecap="round" />
-      <path d="M40 12 L40 3" stroke="#f97316" strokeWidth="2.4" fill="none" strokeLinecap="round" />
-      <ellipse cx="27" cy="38" rx="9" ry="11" fill="#fff" />
-      <ellipse cx="53" cy="38" rx="9" ry="11" fill="#fff" />
-      <circle cx="27" cy="40" r="4.4" fill="#1e1b4b" />
-      <circle cx="53" cy="40" r="4.4" fill="#1e1b4b" />
-      <circle cx="25.2" cy="37.4" r="1.5" fill="#fff" />
-      <circle cx="51.2" cy="37.4" r="1.5" fill="#fff" />
-      <path d="M24 58 Q40 68 56 58" stroke="#166534" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+      <ellipse cx="30" cy="18" rx="11" ry="6" fill="rgba(255,255,255,0.4)" />
+      <path d="M36 6 C32 -6 24 -12 20 -10" stroke="#ef4444" strokeWidth="3.4" fill="none" strokeLinecap="round" />
+      <path d="M36 6 C40 -6 50 -12 56 -8" stroke="#ef4444" strokeWidth="3.4" fill="none" strokeLinecap="round" />
+      <path d="M38 8 L34 -2" stroke="#f97316" strokeWidth="2.6" fill="none" strokeLinecap="round" />
+      <ellipse cx="26" cy="36" rx="9.5" ry="12" fill="#fff" />
+      <ellipse cx="52" cy="36" rx="9.5" ry="12" fill="#fff" />
+      <circle cx="27" cy="38" r="4.6" fill="#1e1b4b" />
+      <circle cx="53" cy="38" r="4.6" fill="#1e1b4b" />
+      <circle cx="24.8" cy="35.2" r="1.6" fill="#fff" />
+      <circle cx="50.8" cy="35.2" r="1.6" fill="#fff" />
+      <path d="M22 58 Q40 70 58 58" stroke="#166534" strokeWidth="2.6" fill="none" strokeLinecap="round" />
     </svg>
   );
 }

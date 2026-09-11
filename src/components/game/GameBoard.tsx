@@ -519,7 +519,7 @@ export function GameBoard() {
         />
       </div>
 
-      <p className="text-sm font-extrabold text-violet-800">⬆️⬇️⬅️➡️ or WASD · swipe the board</p>
+      <p className="text-sm font-extrabold text-violet-800">Arrows or WASD · swipe the board</p>
 
       <DPad onSteer={steer} disabled={phase !== "playing" || panel !== "none"} />
 
