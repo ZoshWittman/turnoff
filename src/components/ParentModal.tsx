@@ -23,6 +23,7 @@ import {
   loadProviderSecrets,
   saveProviderSecrets,
 } from "@/services/secretVault";
+import { listSpeakableVoices } from "@/services/tts";
 import { useAppStore } from "@/store/useAppStore";
 import {
   PROVIDER_MODELS,
@@ -61,7 +62,7 @@ export function ParentModal({ onClose }: ParentModalProps) {
     authFeatures,
     setSessionSecrets,
   } = useAuth();
-  const { provider, model, setProvider } = useAppStore();
+  const { provider, model, setProvider, ttsVoiceId, setTtsVoiceId } = useAppStore();
 
   const [step, setStep] = useState<GateStep>("math");
   const [challenge, setChallenge] = useState(() => createMathChallenge());
@@ -310,6 +311,27 @@ export function ParentModal({ onClose }: ParentModalProps) {
                   onBlur={() => setProvider(provider, customModel)}
                   aria-label="Model id"
                 />
+              </section>
+
+              <section className="rounded-3xl bg-white p-4 shadow-sm">
+                <h3 className="mb-3 flex items-center gap-2 text-xl font-bold text-violet-950">
+                  <Sparkles size={20} /> Read To Me voice
+                </h3>
+                <p className="mb-3 text-sm text-violet-700">
+                  Auto picks a warm neural storyteller unless this device already has a great built-in voice like Samantha or Zira.
+                </p>
+                <label className="mb-2 block text-sm font-bold text-violet-700">Storyteller</label>
+                <select
+                  className="wf-input"
+                  value={ttsVoiceId}
+                  onChange={(event) => setTtsVoiceId(event.target.value)}
+                >
+                  {listSpeakableVoices().map((voice) => (
+                    <option key={voice.id} value={voice.id}>
+                      {voice.label}
+                    </option>
+                  ))}
+                </select>
               </section>
 
               <section className="rounded-3xl bg-white p-4 shadow-sm">

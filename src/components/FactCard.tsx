@@ -4,12 +4,16 @@ import { motion, type PanInfo } from "framer-motion";
 import { Puzzle, Star, Volume2, VolumeX } from "lucide-react";
 import type { Fact } from "@/types";
 import { CATEGORY_META } from "@/types";
+import { VoiceBadge } from "@/components/VoiceBadge";
 
 interface FactCardProps {
   fact: Fact;
   isFavorite: boolean;
   isSpeaking: boolean;
   speechSupported: boolean;
+  voiceName?: string;
+  voiceLoading?: boolean;
+  voiceEngine?: "neural" | "browser" | "none";
   onFavorite: () => void;
   onSpeak: () => void;
   onTrivia: () => void;
@@ -22,6 +26,9 @@ export function FactCard({
   isFavorite,
   isSpeaking,
   speechSupported,
+  voiceName,
+  voiceLoading,
+  voiceEngine,
   onFavorite,
   onSpeak,
   onTrivia,
@@ -89,14 +96,19 @@ export function FactCard({
           </button>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {speechSupported ? (
-              <button
-                type="button"
-                onClick={onSpeak}
-                className="wf-btn bg-sky-400 text-violet-950 hover:bg-sky-300"
-              >
-                {isSpeaking ? <VolumeX size={28} /> : <Volume2 size={28} />}
-                {isSpeaking ? "Shh!" : "Read To Me!"}
-              </button>
+              <div className="grid gap-2">
+                <button
+                  type="button"
+                  onClick={onSpeak}
+                  className="wf-btn bg-sky-400 text-violet-950 hover:bg-sky-300"
+                >
+                  {isSpeaking ? <VolumeX size={28} /> : <Volume2 size={28} />}
+                  {isSpeaking ? "Shh!" : voiceLoading ? "Almost ready…" : "Read To Me!"}
+                </button>
+                {voiceName ? (
+                  <VoiceBadge name={voiceName} loading={voiceLoading} engine={voiceEngine} />
+                ) : null}
+              </div>
             ) : (
               <p className="flex items-center justify-center rounded-2xl bg-white/80 px-3 py-3 text-center font-bold text-violet-700">
                 Ask a grown-up to read this fact aloud.

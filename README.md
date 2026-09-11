@@ -7,7 +7,7 @@ The app works immediately with a local library of 120+ facts. Optional AI genera
 ## Features
 
 - Kid Mode: large type, pastel UI, swipeable cards, category chips, Surprise Me, favorites
-- Read To Me: Web Speech API with a friendly pitch and slower rate
+- Read To Me: Kokoro neural storyteller in the browser (Bella) when built-in voices are robotic or missing; quality native voices like Samantha still win when present
 - Parent Dashboard: math challenge + 4-digit PIN, encrypted BYOK keys, provider/model picker
 - Guest play plus optional Google, Apple, Firebase, Supabase, and passkeys
 - Offline fallback facts when no key is configured or a provider call fails

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Lightbulb, PartyPopper, Undo2, Volume2, VolumeX } from "lucide-react";
 import type { Fact, TriviaQuestion } from "@/types";
 import { CATEGORY_META } from "@/types";
+import { VoiceBadge } from "@/components/VoiceBadge";
 
 const CHOICE_COLORS = [
   "bg-sky-300 hover:bg-sky-200",
@@ -21,6 +22,9 @@ interface TriviaPlayProps {
   showAnswer: boolean;
   isSpeaking: boolean;
   speechSupported: boolean;
+  voiceName?: string;
+  voiceLoading?: boolean;
+  voiceEngine?: "neural" | "browser" | "none";
   onChoice: (id: string) => void;
   onClue: () => void;
   onSpeak: () => void;
@@ -36,6 +40,9 @@ export function TriviaPlay({
   showAnswer,
   isSpeaking,
   speechSupported,
+  voiceName,
+  voiceLoading,
+  voiceEngine,
   onChoice,
   onClue,
   onSpeak,
@@ -141,10 +148,13 @@ export function TriviaPlay({
             {nextClue ? `Clue ${revealedClues + 1}!` : showAnswer ? "All clues shown" : "Show the answer"}
           </button>
           {speechSupported ? (
-            <button type="button" onClick={onSpeak} className="wf-btn bg-sky-400 text-violet-950">
-              {isSpeaking ? <VolumeX size={26} /> : <Volume2 size={26} />}
-              {isSpeaking ? "Shh!" : "Read To Me!"}
-            </button>
+            <div className="grid gap-2">
+              <button type="button" onClick={onSpeak} className="wf-btn bg-sky-400 text-violet-950">
+                {isSpeaking ? <VolumeX size={26} /> : <Volume2 size={26} />}
+                {isSpeaking ? "Shh!" : voiceLoading ? "Almost ready…" : "Read To Me!"}
+              </button>
+              {voiceName ? <VoiceBadge name={voiceName} loading={voiceLoading} engine={voiceEngine} /> : null}
+            </div>
           ) : (
             <p className="flex items-center justify-center rounded-2xl bg-white/80 px-3 py-2 text-center font-bold text-violet-700">
               Ask a grown-up to read this quiz aloud.

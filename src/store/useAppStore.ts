@@ -17,6 +17,7 @@ interface AppState {
   isSpeaking: boolean;
   warning: string | null;
   query: string;
+  ttsVoiceId: string;
   setCategory: (category: BrowseCategory) => void;
   setFacts: (facts: Fact[]) => void;
   addFact: (fact: Fact) => void;
@@ -30,6 +31,7 @@ interface AppState {
   setSpeaking: (value: boolean) => void;
   setWarning: (warning: string | null) => void;
   setQuery: (query: string) => void;
+  setTtsVoiceId: (voiceId: string) => void;
   rememberTitle: (title: string) => void;
 }
 
@@ -53,6 +55,7 @@ export const useAppStore = create<AppState>()(
       isSpeaking: false,
       warning: null,
       query: "",
+      ttsVoiceId: "auto",
       setCategory: (category) => {
         if (category === "favorites") {
           set({ category, currentIndex: 0 });
@@ -104,6 +107,7 @@ export const useAppStore = create<AppState>()(
       setSpeaking: (isSpeaking) => set({ isSpeaking }),
       setWarning: (warning) => set({ warning }),
       setQuery: (query) => set({ query }),
+      setTtsVoiceId: (ttsVoiceId) => set({ ttsVoiceId }),
       rememberTitle: (title) =>
         set((state) => ({
           recentTitles: [title, ...state.recentTitles.filter((item) => item !== title)].slice(0, 12),
@@ -117,6 +121,7 @@ export const useAppStore = create<AppState>()(
         model: state.model,
         category: state.category,
         recentTitles: state.recentTitles,
+        ttsVoiceId: state.ttsVoiceId,
       }),
       onRehydrateStorage: () => (state) => {
         if (!state) return;

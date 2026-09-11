@@ -19,7 +19,16 @@ import {
   playTryAgainSound,
   haptic,
 } from "@/services/sounds";
-import { isSpeechSupported, preloadVoices, speakFact, stopSpeaking } from "@/services/tts";
+import {
+  configureTts,
+  getTtsStatus,
+  isSpeechSupported,
+  preloadVoices,
+  speakFact,
+  stopSpeaking,
+  subscribeTtsStatus,
+  type TtsStatus,
+} from "@/services/tts";
 import { buildTriviaFromFact, loadTriviaForFact, triviaSpeechText } from "@/services/trivia";
 import { getSecretForProvider } from "@/services/secretVault";
 import type { FactCategory, TriviaQuestion } from "@/types";
@@ -48,6 +57,7 @@ function WonderFactApp() {
     provider,
     model,
     rememberTitle,
+    ttsVoiceId,
   } = useAppStore();
   const [parentOpen, setParentOpen] = useState(false);
   const [trivia, setTrivia] = useState<TriviaQuestion | null>(null);
@@ -55,15 +65,20 @@ function WonderFactApp() {
   const [wrongIds, setWrongIds] = useState<string[]>([]);
   const [triviaStatus, setTriviaStatus] = useState<"playing" | "correct" | "wrong">("playing");
   const [showAnswer, setShowAnswer] = useState(false);
-  const [speechSupported, setSpeechSupported] = useState(false);
+  const [speechSupported] = useState(() => isSpeechSupported());
+  const [ttsStatus, setTtsStatus] = useState<TtsStatus>(() => getTtsStatus());
   const triviaTouchedRef = useRef(false);
   const triviaFactIdRef = useRef<string | null>(null);
 
   useEffect(() => {
+    configureTts({ preferredVoiceId: ttsVoiceId });
     preloadVoices();
-    setSpeechSupported(isSpeechSupported());
-    return () => stopSpeaking();
-  }, []);
+    const unsub = subscribeTtsStatus(setTtsStatus);
+    return () => {
+      unsub();
+      stopSpeaking();
+    };
+  }, [ttsVoiceId]);
 
   const visibleFacts = category === "favorites" ? favorites : facts;
   const current = visibleFacts[Math.min(currentIndex, Math.max(visibleFacts.length - 1, 0))];
@@ -319,6 +334,9 @@ function WonderFactApp() {
                 showAnswer={showAnswer}
                 isSpeaking={isSpeaking}
                 speechSupported={speechSupported}
+                voiceName={ttsStatus.voiceName}
+                voiceLoading={ttsStatus.loading}
+                voiceEngine={ttsStatus.engine}
                 onChoice={handleTriviaChoice}
                 onClue={handleTriviaClue}
                 onSpeak={handleSpeak}
@@ -330,6 +348,9 @@ function WonderFactApp() {
                 isFavorite={isFavorite(current.id)}
                 isSpeaking={isSpeaking}
                 speechSupported={speechSupported}
+                voiceName={ttsStatus.voiceName}
+                voiceLoading={ttsStatus.loading}
+                voiceEngine={ttsStatus.engine}
                 onFavorite={handleFavorite}
                 onSpeak={handleSpeak}
                 onTrivia={() => void openTrivia()}
