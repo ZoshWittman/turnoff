@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState, type TouchEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   HelpCircle,
@@ -15,6 +15,7 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { VoiceBadge } from "@/components/VoiceBadge";
 import { DPad } from "@/components/game/DPad";
+import { Snake3D } from "@/components/game/Snake3D";
 import {
   AlbumPanel,
   DressUpPanel,
@@ -117,11 +118,16 @@ export function GameBoard() {
   const [ttsStatus, setTtsStatus] = useState<TtsStatus>(() => getTtsStatus());
   const [speechSupported] = useState(() => isSpeechSupported());
   const touchRef = useRef<{ x: number; y: number } | null>(null);
+  const shellRef = useRef<HTMLElement | null>(null);
+  const boardRef = useRef(board);
   const phaseRef = useRef(phase);
+  const panelRef = useRef(panel);
   const roundRef = useRef(round);
   const correctCountRef = useRef(correctCount);
   const deadlineRef = useRef(0);
+  boardRef.current = board;
   phaseRef.current = phase;
+  panelRef.current = panel;
   roundRef.current = round;
   correctCountRef.current = correctCount;
 
@@ -162,6 +168,7 @@ export function GameBoard() {
 
   const beginTrivia = useCallback(
     (target: BoardTarget) => {
+      phaseRef.current = "trivia";
       playEatSound();
       haptic(14);
       const next = buildLandRound(target.fact, target.n);
@@ -215,13 +222,11 @@ export function GameBoard() {
   useEffect(() => {
     if (phase !== "playing" || panel !== "none") return;
     const id = window.setInterval(() => {
-      let landed: BoardTarget | undefined;
-      setBoard((prev) => {
-        const result = tickBoard(prev);
-        landed = result.landed;
-        return result.board;
-      });
-      if (landed) beginTrivia(landed);
+      if (phaseRef.current !== "playing" || panelRef.current !== "none") return;
+      const result = tickBoard(boardRef.current);
+      boardRef.current = result.board;
+      setBoard(result.board);
+      if (result.landed) beginTrivia(result.landed);
     }, board.tickMs);
     return () => window.clearInterval(id);
   }, [beginTrivia, board.tickMs, phase, panel]);
@@ -249,12 +254,24 @@ export function GameBoard() {
   }, [addPlayTime, kidId, phase, profile]);
 
   const steer = useCallback((dir: Direction) => {
-    if (phaseRef.current !== "playing") return;
-    setBoard((prev) => setPendingDir(prev, dir));
+    if (phaseRef.current !== "playing" || panelRef.current !== "none") return;
+    const next = setPendingDir(boardRef.current, dir);
+    boardRef.current = next;
+    setBoard(next);
   }, []);
 
   useEffect(() => {
+    if (phase === "playing" && panel === "none") {
+      shellRef.current?.focus({ preventScroll: true });
+    }
+  }, [phase, panel]);
+
+  useEffect(() => {
     function onKey(event: KeyboardEvent) {
+      const target = event.target as HTMLElement | null;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)) {
+        return;
+      }
       const map: Record<string, Direction> = {
         ArrowUp: "up",
         ArrowDown: "down",
@@ -270,8 +287,8 @@ export function GameBoard() {
       event.preventDefault();
       steer(dir);
     }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
   }, [steer]);
 
   useEffect(() => {
@@ -282,6 +299,8 @@ export function GameBoard() {
       },
       snapshot: () => ({
         phase: phaseRef.current,
+        dir: boardRef.current.dir,
+        head: boardRef.current.snake[0],
         targets: board.targets.map((target) => ({
           n: target.n,
           emoji: target.fact.emoji,
@@ -297,10 +316,10 @@ export function GameBoard() {
     };
   }, [beginTrivia, board.targets, muted, stickers]);
 
-  const snakeMap = useMemo(() => {
-    const map = new Map<string, number>();
-    board.snake.forEach((pos, index) => map.set(keyOf(pos), index));
-    return map;
+  const snakeCells = useMemo(() => {
+    const set = new Set<string>();
+    for (const pos of board.snake) set.add(keyOf(pos));
+    return set;
   }, [board.snake]);
 
   const targetMap = useMemo(() => {
@@ -340,7 +359,11 @@ export function GameBoard() {
   }
 
   function resumeAfterMiss() {
-    if (round) setBoard((prev) => missAndReplace(prev, round.target.n));
+    if (round) {
+      const next = missAndReplace(boardRef.current, round.target.n);
+      boardRef.current = next;
+      setBoard(next);
+    }
     setRound(null);
     setPhase("playing");
   }
@@ -351,17 +374,14 @@ export function GameBoard() {
       return;
     }
     const n = round.target.n;
-    const previousLevel = board.level;
-    let nextLevel = previousLevel;
-    setBoard((prev) => {
-      const next = completeReveal(prev, n);
-      nextLevel = next.level;
-      return next;
-    });
+    const previousLevel = boardRef.current.level;
+    const next = completeReveal(boardRef.current, n);
+    boardRef.current = next;
+    setBoard(next);
     setRound(null);
     stopSpeaking();
     setSpeaking(false);
-    if (nextLevel > previousLevel) {
+    if (next.level > previousLevel) {
       playLevelUpSound();
       setPhase("levelup");
       window.setTimeout(() => setPhase("playing"), reduceMotion ? 400 : 1400);
@@ -373,26 +393,26 @@ export function GameBoard() {
   function restart() {
     stopSpeaking();
     setSpeaking(false);
-    setBoard(restartBoard());
+    const next = restartBoard();
+    boardRef.current = next;
+    setBoard(next);
     setRound(null);
     setPanel("none");
     setPhase("playing");
   }
 
-  function onTouchStart(event: TouchEvent) {
-    const touch = event.changedTouches[0];
-    if (!touch) return;
-    touchRef.current = { x: touch.clientX, y: touch.clientY };
+  function onPointerDown(event: PointerEvent<HTMLDivElement>) {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    touchRef.current = { x: event.clientX, y: event.clientY };
   }
 
-  function onTouchEnd(event: TouchEvent) {
+  function onPointerUp(event: PointerEvent<HTMLDivElement>) {
     const start = touchRef.current;
-    const touch = event.changedTouches[0];
     touchRef.current = null;
-    if (!start || !touch) return;
-    const dx = touch.clientX - start.x;
-    const dy = touch.clientY - start.y;
-    if (Math.hypot(dx, dy) < 28) return;
+    if (!start) return;
+    const dx = event.clientX - start.x;
+    const dy = event.clientY - start.y;
+    if (Math.hypot(dx, dy) < 24) return;
     if (Math.abs(dx) > Math.abs(dy)) steer(dx > 0 ? "right" : "left");
     else steer(dy > 0 ? "down" : "up");
   }
@@ -402,7 +422,13 @@ export function GameBoard() {
   const cells = board.cols * board.rows;
 
   return (
-    <section className="flex w-full flex-col items-center gap-3" data-testid="game-board">
+    <section
+      ref={shellRef}
+      className="flex w-full flex-col items-center gap-3 outline-none"
+      data-testid="game-board"
+      tabIndex={0}
+      aria-label="WonderFact snake game"
+    >
       <div className="flex w-full max-w-xl flex-wrap items-center justify-between gap-2">
         <p className="rounded-full bg-white/80 px-3 py-1 text-sm font-extrabold text-violet-800">
           {animal.emoji} Lv {board.level} · {stickers} ⭐ · {formatPlayTime(save.playTimeMs)}
@@ -443,47 +469,57 @@ export function GameBoard() {
       </div>
 
       <div
-        className="wf-board"
-        style={{ gridTemplateColumns: `repeat(${board.cols}, minmax(0, 1fr))` }}
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
+        className="wf-board-wrap"
+        style={{
+          ["--wf-cols" as string]: board.cols,
+          ["--wf-rows" as string]: board.rows,
+        }}
+        onPointerDown={onPointerDown}
+        onPointerUp={onPointerUp}
+        onPointerCancel={() => {
+          touchRef.current = null;
+        }}
         role="application"
         aria-label="WonderFact game board"
       >
-        {Array.from({ length: cells }, (_, index) => {
-          const x = index % board.cols;
-          const y = Math.floor(index / board.cols);
-          const snakeIndex = snakeMap.get(`${x},${y}`);
-          const target = targetMap.get(`${x},${y}`);
-          const isHead = snakeIndex === 0;
-          const color = skin.colors[(snakeIndex ?? 0) % skin.colors.length];
-          return (
-            <div
-              key={`${x}-${y}`}
-              className={`wf-cell ${isHead ? "wf-cell-head" : ""} ${target && snakeIndex === undefined ? "wf-target" : ""}`}
-              data-testid={isHead ? "snake-head" : target ? `target-${target.n}` : undefined}
-              style={
-                snakeIndex !== undefined
-                  ? { background: color, boxShadow: "inset 0 0 0 2px rgba(255,255,255,0.45)" }
-                  : undefined
-              }
-            >
-              {isHead ? (
-                <span className="text-xl sm:text-2xl" aria-hidden>
-                  {animal.emoji}
-                </span>
-              ) : target ? (
-                <span className="flex flex-col items-center leading-none">
-                  <span className="text-lg font-black text-violet-950 sm:text-xl">{target.n}</span>
-                  <span className="text-base sm:text-lg" aria-hidden>
-                    {target.fact.emoji}
+        <div
+          className="wf-board"
+          style={{ gridTemplateColumns: `repeat(${board.cols}, minmax(0, 1fr))` }}
+        >
+          {Array.from({ length: cells }, (_, index) => {
+            const x = index % board.cols;
+            const y = Math.floor(index / board.cols);
+            const target = targetMap.get(`${x},${y}`);
+            const covered = snakeCells.has(`${x},${y}`);
+            return (
+              <div
+                key={`${x}-${y}`}
+                className={`wf-cell ${target ? "wf-target" : ""}`}
+                data-testid={target ? `target-${target.n}` : undefined}
+              >
+                {target ? (
+                  <span className={`flex flex-col items-center leading-none ${covered ? "opacity-40" : ""}`}>
+                    <span className="text-lg font-black text-violet-950 sm:text-xl">{target.n}</span>
+                    <span className="text-base sm:text-lg" aria-hidden>
+                      {target.fact.emoji}
+                    </span>
                   </span>
-                </span>
-              ) : null}
-            </div>
-          );
-        })}
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+        <Snake3D
+          snake={board.snake}
+          dir={board.dir}
+          cols={board.cols}
+          rows={board.rows}
+          skin={skin}
+          animal={animal}
+        />
       </div>
+
+      <p className="text-sm font-extrabold text-violet-800">⬆️⬇️⬅️➡️ or WASD · swipe the board</p>
 
       <DPad onSteer={steer} disabled={phase !== "playing" || panel !== "none"} />
 

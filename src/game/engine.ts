@@ -9,19 +9,49 @@ import {
 } from "./rules";
 import type { BoardState, BoardTarget, Direction, GridPos, TargetN } from "./types";
 
-const OPPOSITE: Record<Direction, Direction> = {
+export const OPPOSITE: Record<Direction, Direction> = {
   up: "down",
   down: "up",
   left: "right",
   right: "left",
 };
 
-const STEP: Record<Direction, GridPos> = {
+export const STEP: Record<Direction, GridPos> = {
   up: { x: 0, y: -1 },
   down: { x: 0, y: 1 },
   left: { x: -1, y: 0 },
   right: { x: 1, y: 0 },
 };
+
+export function isReverse(current: Direction, next: Direction): boolean {
+  return OPPOSITE[current] === next;
+}
+
+export function queueTurn(current: Direction, pending: Direction, next: Direction): Direction {
+  if (isReverse(current, next)) return pending;
+  return next;
+}
+
+export function gridPos(pos: GridPos): GridPos {
+  return { x: Math.round(pos.x), y: Math.round(pos.y) };
+}
+
+export function stepFrom(
+  pos: GridPos,
+  dir: Direction,
+  cols = BOARD_COLS,
+  rows = BOARD_ROWS,
+): GridPos {
+  const head = gridPos(pos);
+  const step = STEP[dir];
+  return wrapPos({ x: head.x + step.x, y: head.y + step.y }, cols, rows);
+}
+
+export function manhattanStep(from: GridPos, to: GridPos, cols: number, rows: number): number {
+  const dx = Math.min(Math.abs(to.x - from.x), cols - Math.abs(to.x - from.x));
+  const dy = Math.min(Math.abs(to.y - from.y), rows - Math.abs(to.y - from.y));
+  return dx + dy;
+}
 
 export function hashSeed(value: string): number {
   let hash = 0;
@@ -57,8 +87,7 @@ export function wrapPos(pos: GridPos, cols = BOARD_COLS, rows = BOARD_ROWS): Gri
 }
 
 export function queuedDirection(current: Direction, next: Direction): Direction {
-  if (OPPOSITE[current] === next) return current;
-  return next;
+  return queueTurn(current, current, next);
 }
 
 function occupiedSet(snake: GridPos[], extra: GridPos[] = []): Set<string> {
@@ -140,25 +169,21 @@ export function createBoard(seed = Date.now()): BoardState {
 }
 
 export function setPendingDir(board: BoardState, dir: Direction): BoardState {
-  return { ...board, pendingDir: queuedDirection(board.dir, dir) };
+  return { ...board, pendingDir: queueTurn(board.dir, board.pendingDir, dir) };
 }
 
 export function targetAt(board: BoardState, pos: GridPos): BoardTarget | undefined {
-  return board.targets.find((target) => samePos(target.pos, pos));
+  const cell = gridPos(pos);
+  return board.targets.find((target) => samePos(gridPos(target.pos), cell));
 }
 
 export function tickBoard(board: BoardState): { board: BoardState; landed?: BoardTarget } {
-  const dir = queuedDirection(board.dir, board.pendingDir);
-  const head = board.snake[0]!;
-  const step = STEP[dir];
-  const nextHead = wrapPos(
-    { x: head.x + step.x, y: head.y + step.y },
-    board.cols,
-    board.rows,
-  );
+  const dir = isReverse(board.dir, board.pendingDir) ? board.dir : board.pendingDir;
+  const head = gridPos(board.snake[0]!);
+  const nextHead = stepFrom(head, dir, board.cols, board.rows);
   const landed = targetAt(board, nextHead);
   const grew = Boolean(landed);
-  const body = grew ? board.snake : board.snake.slice(0, -1);
+  const body = grew ? board.snake.map(gridPos) : board.snake.map(gridPos).slice(0, -1);
   const snake = [nextHead, ...body].slice(0, 18);
   return {
     board: { ...board, snake, dir, pendingDir: dir },

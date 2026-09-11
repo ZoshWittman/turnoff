@@ -111,6 +111,8 @@ export interface WonderFactGameTestApi {
   landOn: (n: TargetN) => void;
   snapshot: () => {
     phase: GamePhase;
+    dir?: Direction;
+    head?: GridPos;
     targets: Array<{ n: number; emoji: string; title: string }>;
     stickerCount: number;
     muted: boolean;

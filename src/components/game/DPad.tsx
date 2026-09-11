@@ -18,10 +18,7 @@ export function DPad({
   disabled?: boolean;
 }) {
   return (
-    <div
-      className="mx-auto grid w-full max-w-[16rem] grid-cols-3 grid-rows-3 gap-2"
-      aria-label="Move"
-    >
+    <div className="mx-auto grid w-full max-w-[18rem] grid-cols-3 grid-rows-3 gap-2" aria-label="Move">
       {KEYS.map(({ dir, testId, label, Icon, extra }) => (
         <button
           key={dir}
@@ -29,15 +26,21 @@ export function DPad({
           data-testid={testId}
           aria-label={label}
           disabled={disabled}
-          className={`wf-btn h-16 min-h-16 bg-white text-violet-900 ${extra ?? ""} ${
+          className={`wf-btn h-[4.4rem] min-h-[4.4rem] bg-white text-violet-900 ${extra ?? ""} ${
             dir === "left" || dir === "right" ? "row-start-2" : ""
           } ${dir === "down" ? "row-start-3" : ""}`}
           onPointerDown={(event) => {
             event.preventDefault();
+            event.stopPropagation();
+            if (disabled) return;
+            onSteer(dir);
+          }}
+          onClick={() => {
+            if (disabled) return;
             onSteer(dir);
           }}
         >
-          <Icon size={28} />
+          <Icon size={34} />
         </button>
       ))}
     </div>
