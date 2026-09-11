@@ -286,12 +286,16 @@ function WonderFactApp() {
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-5 px-4 py-5">
         <CategoryBar value={category} onChange={setCategory} />
 
-        <AskBar
-          value={query}
-          onChange={setQuery}
-          disabled={isGenerating}
-          onAsk={() => void generate({ fromQuery: true })}
-        />
+        {!trivia ? (
+          <AskBar
+            value={query}
+            onChange={setQuery}
+            disabled={isGenerating}
+            onAsk={() => void generate({ fromQuery: true })}
+          />
+        ) : (
+          <p className="text-center text-lg font-extrabold text-violet-800">Quiz time — big buttons, one right answer!</p>
+        )}
 
         <div className="flex flex-col items-center gap-4">
           {isGenerating && (
