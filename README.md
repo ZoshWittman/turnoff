@@ -7,6 +7,7 @@ The app works immediately with a local library of 120+ facts. Optional AI genera
 ## Features
 
 - Kid Mode: large type, pastel UI, swipeable cards, category chips, Surprise Me, favorites
+- Game board: steer a snake (or unlocked animals) to numbered WonderFact stickers, answer offline trivia, collect an album
 - Read To Me: Piper neural storyteller in the browser (Amy) when built-in voices are robotic or missing; quality native voices like Samantha still win when present
 - Parent Dashboard: math challenge + 4-digit PIN, encrypted BYOK keys, provider/model picker
 - Guest play plus optional Google, Apple, Firebase, Supabase, and passkeys

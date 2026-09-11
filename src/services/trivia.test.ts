@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { FALLBACK_FACTS } from "@/data/fallbackFacts";
 import {
   buildTriviaFromFact,
+  buildTriviaSetFromFact,
   extractFactNumber,
   parseAiTrivia,
   triviaSpeechText,
@@ -90,5 +91,22 @@ describe("offline trivia generation", () => {
     expect(parsed?.choices.some((choice) => choice.isCorrect)).toBe(true);
 
     expect(parseAiTrivia({ prompt: "Hi" }, octopus)).toBeNull();
+  });
+
+  it("builds N unique offline questions from one fact for the game board", () => {
+    const set = buildTriviaSetFromFact(octopus, 5);
+    expect(set).toHaveLength(5);
+    expect(new Set(set.map((question) => question.id)).size).toBe(5);
+    expect(set.every((question) => question.source === "local")).toBe(true);
+    expect(set.every((question) => question.choices.some((choice) => choice.isCorrect))).toBe(
+      true,
+    );
+    for (const fact of FALLBACK_FACTS) {
+      const questions = buildTriviaSetFromFact(fact, 5);
+      expect(questions).toHaveLength(5);
+      expect(questions.every((question) => question.choices.some((choice) => choice.isCorrect))).toBe(
+        true,
+      );
+    }
   });
 });

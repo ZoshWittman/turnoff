@@ -10,7 +10,10 @@ import { ParentModal } from "@/components/ParentModal";
 import { CategoryBar } from "@/components/CategoryBar";
 import { AskBar } from "@/components/AskBar";
 import { AuthScreen } from "@/components/AuthScreen";
+import { ModeSwitch } from "@/components/ModeSwitch";
+import { GameBoard } from "@/components/game/GameBoard";
 import { useAppStore } from "@/store/useAppStore";
+import { useGameStore } from "@/store/useGameStore";
 import { pickOfflineFact, requestKidFact } from "@/services/aiProvider";
 import {
   playCelebrateSound,
@@ -59,6 +62,8 @@ function WonderFactApp() {
     rememberTitle,
     ttsVoiceId,
   } = useAppStore();
+  const kidMode = useGameStore((state) => state.kidMode);
+  const setKidMode = useGameStore((state) => state.setKidMode);
   const [parentOpen, setParentOpen] = useState(false);
   const [trivia, setTrivia] = useState<TriviaQuestion | null>(null);
   const [revealedClues, setRevealedClues] = useState(0);
@@ -299,8 +304,22 @@ function WonderFactApp() {
       </header>
 
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-5 px-4 py-5">
-        <CategoryBar value={category} onChange={setCategory} />
+        <ModeSwitch
+          value={kidMode}
+          onChange={(mode) => {
+            stopSpeaking();
+            setSpeaking(false);
+            closeTrivia();
+            setKidMode(mode);
+          }}
+        />
 
+        {kidMode === "game" ? <GameBoard /> : null}
+
+        {kidMode === "explore" ? <CategoryBar value={category} onChange={setCategory} /> : null}
+
+        {kidMode === "explore" ? (
+          <>
         {!trivia ? (
           <AskBar
             value={query}
@@ -394,6 +413,8 @@ function WonderFactApp() {
             Next fact →
           </button>
         </div>
+          </>
+        ) : null}
       </main>
 
       {parentOpen ? <ParentModal onClose={() => setParentOpen(false)} /> : null}

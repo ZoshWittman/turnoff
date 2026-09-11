@@ -1,6 +1,7 @@
 import { z } from "zod";
+import { FALLBACK_FACTS } from "@/data/fallbackFacts";
 import type { Fact, FactCategory, TriviaChoice, TriviaQuestion } from "@/types";
-import { CATEGORY_META } from "@/types";
+import { CATEGORY_META, FACT_CATEGORIES } from "@/types";
 
 export const triviaJsonSchema = z.object({
   prompt: z.string().min(8).max(180),
@@ -242,6 +243,199 @@ export function buildTriviaFromFact(fact: Fact): TriviaQuestion {
   const number = extractFactNumber(fact.fact);
   if (number && number.value > 0) return numberTrivia(fact, number);
   return claimTrivia(fact);
+}
+
+const STOP_WORDS = new Set([
+  "a",
+  "an",
+  "and",
+  "are",
+  "away",
+  "because",
+  "can",
+  "from",
+  "has",
+  "have",
+  "its",
+  "just",
+  "made",
+  "one",
+  "our",
+  "that",
+  "the",
+  "their",
+  "them",
+  "they",
+  "this",
+  "too",
+  "with",
+  "you",
+  "your",
+]);
+
+function otherFacts(fact: Fact, pool: Fact[] = FALLBACK_FACTS): Fact[] {
+  return pool.filter((item) => item.id !== fact.id);
+}
+
+function pickOthers(fact: Fact, count: number, seed: string, pool: Fact[] = FALLBACK_FACTS): Fact[] {
+  return shuffle(otherFacts(fact, pool), seed).slice(0, count);
+}
+
+function keywordFromFact(fact: Fact): string | null {
+  const words = `${fact.title} ${fact.fact}`
+    .replace(/[^A-Za-z0-9' ]/g, " ")
+    .split(/\s+/)
+    .map((word) => word.trim())
+    .filter((word) => word.length >= 4 && !STOP_WORDS.has(word.toLowerCase()));
+  const unique = [...new Set(words)];
+  unique.sort((a, b) => b.length - a.length);
+  return unique[0] ?? null;
+}
+
+function titleTrivia(fact: Fact, pool: Fact[] = FALLBACK_FACTS): TriviaQuestion {
+  const others = pickOthers(fact, 3, `${fact.id}-title`, pool);
+  const labels = [fact.title, ...others.map((item) => item.title)];
+  return {
+    id: `trivia-${fact.id}-title`,
+    factId: fact.id,
+    prompt: `${fact.emoji} What is this wonder called?`,
+    choices: toChoices(labels, 0, `${fact.id}-title`),
+    clues: buildClues(fact, "Look at the sticker and the story."),
+    answer: fact.title,
+    celebration: celebrationFor(fact),
+    source: "local",
+  };
+}
+
+function emojiTrivia(fact: Fact, pool: Fact[] = FALLBACK_FACTS): TriviaQuestion {
+  const others = pickOthers(fact, 3, `${fact.id}-emoji`, pool).filter(
+    (item) => item.emoji !== fact.emoji,
+  );
+  const labels = [fact.emoji, ...others.map((item) => item.emoji)];
+  while (labels.length < 4) {
+    const extra = ["🦄", "🎈", "🌟", "🍀"].find((emoji) => !labels.includes(emoji));
+    if (!extra) break;
+    labels.push(extra);
+  }
+  return {
+    id: `trivia-${fact.id}-emoji`,
+    factId: fact.id,
+    prompt: `Which sticker matches ${fact.title}?`,
+    choices: toChoices(labels.slice(0, 4), 0, `${fact.id}-emoji`),
+    clues: buildClues(fact, "Pick the matching sticker."),
+    answer: fact.emoji,
+    celebration: celebrationFor(fact),
+    source: "local",
+  };
+}
+
+function categoryTrivia(fact: Fact): TriviaQuestion {
+  const labels = [
+    CATEGORY_META[fact.category].label,
+    ...FACT_CATEGORIES.filter((category) => category !== fact.category).map(
+      (category) => CATEGORY_META[category].label,
+    ),
+  ].slice(0, 4);
+  return {
+    id: `trivia-${fact.id}-topic`,
+    factId: fact.id,
+    prompt: `${fact.emoji} What kind of wonder is ${fact.title}?`,
+    choices: toChoices(labels, 0, `${fact.id}-topic`),
+    clues: buildClues(fact, `Think about ${CATEGORY_META[fact.category].hint}.`),
+    answer: CATEGORY_META[fact.category].label,
+    celebration: celebrationFor(fact),
+    source: "local",
+  };
+}
+
+function keywordTrivia(fact: Fact): TriviaQuestion | null {
+  const keyword = keywordFromFact(fact);
+  if (!keyword) return null;
+  const sentence = firstSentence(fact.fact);
+  if (!new RegExp(keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i").test(sentence)) {
+    return null;
+  }
+  const blanked = sentence.replace(
+    new RegExp(keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"),
+    "____",
+  );
+  const funny = FUNNY_WRONG[fact.category].map((line) => line.split(" ")[0] ?? "rainbow");
+  const labels = [keyword, ...funny, fact.category, "bananas"].filter(
+    (label, index, list) => list.findIndex((item) => item.toLowerCase() === label.toLowerCase()) === index,
+  );
+  if (labels.length < 3) return null;
+  return {
+    id: `trivia-${fact.id}-word`,
+    factId: fact.id,
+    prompt: `Fill in the blank! ${blanked}`,
+    choices: toChoices(labels.slice(0, 4), 0, `${fact.id}-word`),
+    clues: buildClues(fact, "The missing word is in the story."),
+    answer: fact.fact,
+    celebration: celebrationFor(fact),
+    source: "local",
+  };
+}
+
+function claimVariantTrivia(fact: Fact, seedTag: string): TriviaQuestion {
+  const trueClaim = firstSentence(fact.fact).replace(/[.!?]+$/, ".");
+  const funny = shuffle(FUNNY_WRONG[fact.category], `${fact.id}-${seedTag}`).slice(0, 3);
+  return {
+    id: `trivia-${fact.id}-${seedTag}`,
+    factId: fact.id,
+    prompt: `${fact.emoji} Which sentence is true?`,
+    choices: toChoices([trueClaim, ...funny], 0, `${fact.id}-${seedTag}`),
+    clues: buildClues(fact),
+    answer: fact.fact,
+    celebration: celebrationFor(fact),
+    source: "local",
+  };
+}
+
+export function buildTriviaSetFromFact(
+  fact: Fact,
+  count: number,
+  pool: Fact[] = FALLBACK_FACTS,
+): TriviaQuestion[] {
+  const n = Math.min(5, Math.max(1, Math.round(count)));
+  const generators: Array<() => TriviaQuestion | null> = [
+    () => {
+      const number = extractFactNumber(fact.fact);
+      return number && number.value > 0 ? numberTrivia(fact, number) : null;
+    },
+    () => claimTrivia(fact),
+    () => titleTrivia(fact, pool),
+    () => emojiTrivia(fact, pool),
+    () => categoryTrivia(fact),
+    () => keywordTrivia(fact),
+    () => claimVariantTrivia(fact, "true-2"),
+  ];
+
+  const questions: TriviaQuestion[] = [];
+  const seen = new Set<string>();
+  for (const generate of generators) {
+    if (questions.length >= n) break;
+    const next = generate();
+    if (!next) continue;
+    const key = `${next.prompt}::${next.choices.map((choice) => choice.label).join("|")}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    questions.push({
+      ...next,
+      id: `${next.id}-q${questions.length + 1}`,
+    });
+  }
+
+  let extra = 0;
+  while (questions.length < n) {
+    extra += 1;
+    const fallback = claimVariantTrivia(fact, `extra-${extra}`);
+    questions.push({
+      ...fallback,
+      id: `${fallback.id}-q${questions.length + 1}`,
+    });
+  }
+
+  return questions.slice(0, n);
 }
 
 export function triviaSpeechText(
