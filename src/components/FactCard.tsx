@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, type PanInfo } from "framer-motion";
-import { Star, Volume2, VolumeX } from "lucide-react";
+import { Puzzle, Star, Volume2, VolumeX } from "lucide-react";
 import type { Fact } from "@/types";
 import { CATEGORY_META } from "@/types";
 
@@ -9,8 +9,10 @@ interface FactCardProps {
   fact: Fact;
   isFavorite: boolean;
   isSpeaking: boolean;
+  speechSupported: boolean;
   onFavorite: () => void;
   onSpeak: () => void;
+  onTrivia: () => void;
   onPrev: () => void;
   onNext: () => void;
 }
@@ -19,8 +21,10 @@ export function FactCard({
   fact,
   isFavorite,
   isSpeaking,
+  speechSupported,
   onFavorite,
   onSpeak,
+  onTrivia,
   onPrev,
   onNext,
 }: FactCardProps) {
@@ -74,24 +78,40 @@ export function FactCard({
           {fact.fact}
         </p>
 
-        <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className="mt-8 grid grid-cols-1 gap-3">
           <button
             type="button"
-            onClick={onSpeak}
-            className="wf-btn bg-sky-400 text-violet-950 hover:bg-sky-300"
+            onClick={onTrivia}
+            className="wf-btn bg-fuchsia-400 text-violet-950 hover:bg-fuchsia-300"
           >
-            {isSpeaking ? <VolumeX size={28} /> : <Volume2 size={28} />}
-            {isSpeaking ? "Shh!" : "Read To Me!"}
+            <Puzzle size={28} />
+            Trivia!
           </button>
-          <button
-            type="button"
-            onClick={onFavorite}
-            className={`wf-btn ${isFavorite ? "bg-amber-300" : "bg-white"} text-violet-950`}
-            aria-pressed={isFavorite}
-          >
-            <Star size={28} fill={isFavorite ? "#f59e0b" : "transparent"} />
-            {isFavorite ? "Saved!" : "Save to Favorites"}
-          </button>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {speechSupported ? (
+              <button
+                type="button"
+                onClick={onSpeak}
+                className="wf-btn bg-sky-400 text-violet-950 hover:bg-sky-300"
+              >
+                {isSpeaking ? <VolumeX size={28} /> : <Volume2 size={28} />}
+                {isSpeaking ? "Shh!" : "Read To Me!"}
+              </button>
+            ) : (
+              <p className="flex items-center justify-center rounded-2xl bg-white/80 px-3 py-3 text-center font-bold text-violet-700">
+                Ask a grown-up to read this fact aloud.
+              </p>
+            )}
+            <button
+              type="button"
+              onClick={onFavorite}
+              className={`wf-btn ${isFavorite ? "bg-amber-300" : "bg-white"} text-violet-950`}
+              aria-pressed={isFavorite}
+            >
+              <Star size={28} fill={isFavorite ? "#f59e0b" : "transparent"} />
+              {isFavorite ? "Saved!" : "Save to Favorites"}
+            </button>
+          </div>
         </div>
       </div>
     </motion.article>

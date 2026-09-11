@@ -6,6 +6,7 @@ import { createXai } from "@ai-sdk/xai";
 import { randomFallbackFact } from "@/data/fallbackFacts";
 import { buildKidFactPrompt, factJsonSchema, parseGeneratedFact } from "@/lib/factSchema";
 import { logError } from "@/lib/safeLog";
+import { parseAiTrivia, triviaJsonSchema } from "@/services/trivia";
 import {
   AiProviderError,
   type AiProviderId,
@@ -13,6 +14,7 @@ import {
   type FactCategory,
   type GenerateFactRequest,
   type GenerateFactResponse,
+  type TriviaQuestion,
 } from "@/types";
 
 function classifyProviderError(error: unknown): AiProviderError {
@@ -171,4 +173,45 @@ export async function requestKidFact(input: {
 
 export function pickOfflineFact(category?: FactCategory, recentIds: string[] = []): Fact {
   return randomFallbackFact(category, recentIds);
+}
+
+export async function generateKidTrivia(input: {
+  fact: Fact;
+  provider: AiProviderId;
+  model: string;
+  apiKey: string;
+}): Promise<TriviaQuestion | null> {
+  if (!input.apiKey?.trim()) return null;
+  try {
+    const { output } = await generateText({
+      model: languageModel({
+        provider: input.provider,
+        model: input.model,
+        apiKey: input.apiKey,
+      }),
+      output: Output.object({
+        schema: triviaJsonSchema,
+      }),
+      prompt: [
+        "You write a fun trivia quiz for children ages 5 to 10.",
+        "Turn this fact into a question with clues. Do NOT paste the whole fact as the question.",
+        "Hard rules: kind, safe, short, no scary topics.",
+        "Give 3 or 4 multiple-choice answers. Exactly one isCorrect=true.",
+        "Wrong answers should be playful, not mean.",
+        "Give 2 or 3 short clues that slowly hint, then the real answer.",
+        `Title: ${input.fact.title}`,
+        `Category: ${input.fact.category}`,
+        `Fact: ${input.fact.fact}`,
+      ].join("\n"),
+      maxOutputTokens: 280,
+      maxRetries: 1,
+    });
+    return parseAiTrivia(output, input.fact);
+  } catch (error) {
+    logError("AI trivia failed; using local quiz", {
+      provider: input.provider,
+      error: error instanceof Error ? error.message : "unknown",
+    });
+    return null;
+  }
 }

@@ -23,6 +23,25 @@ export interface Fact {
   createdAt?: string;
 }
 
+export interface TriviaChoice {
+  id: string;
+  label: string;
+  isCorrect: boolean;
+}
+
+export type TriviaSource = "local" | "ai";
+
+export interface TriviaQuestion {
+  id: string;
+  factId: string;
+  prompt: string;
+  choices: TriviaChoice[];
+  clues: string[];
+  answer: string;
+  celebration: string;
+  source: TriviaSource;
+}
+
 export type AiProviderId =
   | "openai"
   | "anthropic"

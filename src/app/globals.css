@@ -107,6 +107,24 @@ body {
   }
 }
 
+@keyframes wf-pop {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.wf-celebrate {
+  animation: wf-pop 0.55s ease;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

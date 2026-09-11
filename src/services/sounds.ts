@@ -33,6 +33,18 @@ export function playTapSound(): void {
   beep(520, 0.08, "sine");
 }
 
+export function playCelebrateSound(): void {
+  beep(523, 0.1, "sine");
+  setTimeout(() => beep(659, 0.1, "sine"), 90);
+  setTimeout(() => beep(784, 0.12, "triangle"), 180);
+  setTimeout(() => beep(1046, 0.22, "sine"), 280);
+}
+
+export function playTryAgainSound(): void {
+  beep(392, 0.12, "sine");
+  setTimeout(() => beep(349, 0.18, "sine"), 140);
+}
+
 export function haptic(pattern: number | number[] = 12): void {
   if (typeof navigator !== "undefined" && typeof navigator.vibrate === "function") {
     navigator.vibrate(pattern);

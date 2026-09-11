@@ -1,20 +1,28 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { Dices, Lock, Sparkles } from "lucide-react";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 import { FactCard } from "@/components/FactCard";
+import { TriviaPlay } from "@/components/TriviaPlay";
 import { ParentModal } from "@/components/ParentModal";
 import { CategoryBar } from "@/components/CategoryBar";
 import { AskBar } from "@/components/AskBar";
 import { AuthScreen } from "@/components/AuthScreen";
 import { useAppStore } from "@/store/useAppStore";
 import { pickOfflineFact, requestKidFact } from "@/services/aiProvider";
-import { playStarSound, playSurpriseSound, haptic } from "@/services/sounds";
-import { preloadVoices, speakFact, stopSpeaking } from "@/services/tts";
+import {
+  playCelebrateSound,
+  playStarSound,
+  playSurpriseSound,
+  playTryAgainSound,
+  haptic,
+} from "@/services/sounds";
+import { isSpeechSupported, preloadVoices, speakFact, stopSpeaking } from "@/services/tts";
+import { buildTriviaFromFact, loadTriviaForFact, triviaSpeechText } from "@/services/trivia";
 import { getSecretForProvider } from "@/services/secretVault";
-import type { FactCategory } from "@/types";
+import type { FactCategory, TriviaQuestion } from "@/types";
 
 function WonderFactApp() {
   const { user, ready, sessionSecrets } = useAuth();
@@ -42,14 +50,35 @@ function WonderFactApp() {
     rememberTitle,
   } = useAppStore();
   const [parentOpen, setParentOpen] = useState(false);
+  const [trivia, setTrivia] = useState<TriviaQuestion | null>(null);
+  const [revealedClues, setRevealedClues] = useState(0);
+  const [wrongIds, setWrongIds] = useState<string[]>([]);
+  const [triviaStatus, setTriviaStatus] = useState<"playing" | "correct" | "wrong">("playing");
+  const [showAnswer, setShowAnswer] = useState(false);
+  const [speechSupported, setSpeechSupported] = useState(false);
+  const triviaTouchedRef = useRef(false);
+  const triviaFactIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     preloadVoices();
+    setSpeechSupported(isSpeechSupported());
     return () => stopSpeaking();
   }, []);
 
   const visibleFacts = category === "favorites" ? favorites : facts;
   const current = visibleFacts[Math.min(currentIndex, Math.max(visibleFacts.length - 1, 0))];
+
+  useEffect(() => {
+    triviaTouchedRef.current = false;
+    triviaFactIdRef.current = null;
+    setTrivia(null);
+    setRevealedClues(0);
+    setWrongIds([]);
+    setTriviaStatus("playing");
+    setShowAnswer(false);
+    stopSpeaking();
+    setSpeaking(false);
+  }, [current?.id, category, setSpeaking]);
 
   const dots = useMemo(
     () => visibleFacts.slice(0, 8).map((fact) => fact.id),
@@ -103,6 +132,17 @@ function WonderFactApp() {
       return;
     }
     setSpeaking(true);
+    if (trivia) {
+      speakFact(
+        triviaSpeechText(trivia, {
+          revealedClues,
+          showAnswer,
+          status: triviaStatus,
+        }),
+        () => setSpeaking(false),
+      );
+      return;
+    }
     speakFact(`${current.title}. ${current.fact}`, () => setSpeaking(false));
   }
 
@@ -111,6 +151,100 @@ function WonderFactApp() {
     playStarSound();
     haptic([8, 30, 8]);
     toggleFavorite(current);
+  }
+
+  async function openTrivia() {
+    if (!current) return;
+    const local = buildTriviaFromFact(current);
+    triviaTouchedRef.current = false;
+    triviaFactIdRef.current = current.id;
+    setTrivia(local);
+    setRevealedClues(0);
+    setWrongIds([]);
+    setTriviaStatus("playing");
+    setShowAnswer(false);
+    setSpeaking(true);
+    speakFact(
+      triviaSpeechText(local, { revealedClues: 0, status: "playing" }),
+      () => setSpeaking(false),
+    );
+
+    const apiKey = await resolveApiKey();
+    if (!apiKey) return;
+    const maybeAi = await loadTriviaForFact(current, { apiKey, provider, model });
+    if (maybeAi.source !== "ai") return;
+    if (triviaFactIdRef.current !== current.id || triviaTouchedRef.current) return;
+    setTrivia(maybeAi);
+    setSpeaking(true);
+    speakFact(
+      triviaSpeechText(maybeAi, { revealedClues: 0, status: "playing" }),
+      () => setSpeaking(false),
+    );
+  }
+
+  function handleTriviaChoice(id: string) {
+    if (!trivia || showAnswer || triviaStatus === "correct") return;
+    const choice = trivia.choices.find((item) => item.id === id);
+    if (!choice || wrongIds.includes(id)) return;
+    triviaTouchedRef.current = true;
+    if (choice.isCorrect) {
+      setTriviaStatus("correct");
+      setShowAnswer(true);
+      playCelebrateSound();
+      haptic([12, 40, 12]);
+      setSpeaking(true);
+      speakFact(
+        triviaSpeechText(trivia, {
+          revealedClues,
+          showAnswer: true,
+          status: "correct",
+        }),
+        () => setSpeaking(false),
+      );
+      return;
+    }
+    const nextClues = Math.min(revealedClues + 1, trivia.clues.length);
+    setTriviaStatus("wrong");
+    setWrongIds((prev) => [...prev, id]);
+    setRevealedClues(nextClues);
+    playTryAgainSound();
+    haptic(16);
+    setSpeaking(true);
+    speakFact(
+      triviaSpeechText(trivia, {
+        revealedClues: nextClues,
+        status: "wrong",
+      }),
+      () => setSpeaking(false),
+    );
+  }
+
+  function handleTriviaClue() {
+    if (!trivia) return;
+    triviaTouchedRef.current = true;
+    if (revealedClues < trivia.clues.length) {
+      const next = revealedClues + 1;
+      const clue = trivia.clues[revealedClues];
+      setRevealedClues(next);
+      setSpeaking(true);
+      speakFact(clue ?? trivia.prompt, () => setSpeaking(false));
+      return;
+    }
+    setShowAnswer(true);
+    setSpeaking(true);
+    speakFact(`The answer is: ${trivia.answer}`, () => setSpeaking(false));
+  }
+
+  function closeTrivia() {
+    triviaTouchedRef.current = false;
+    triviaFactIdRef.current = null;
+    setTrivia(null);
+    setRevealedClues(0);
+    setWrongIds([]);
+    setTriviaStatus("playing");
+    setShowAnswer(false);
+    stopSpeaking();
+    setSpeaking(false);
   }
 
   if (!ready) {
@@ -171,13 +305,30 @@ function WonderFactApp() {
             </p>
           )}
           <AnimatePresence mode="wait">
-            {current ? (
+            {current && trivia ? (
+              <TriviaPlay
+                fact={current}
+                trivia={trivia}
+                revealedClues={revealedClues}
+                wrongIds={wrongIds}
+                status={triviaStatus}
+                showAnswer={showAnswer}
+                isSpeaking={isSpeaking}
+                speechSupported={speechSupported}
+                onChoice={handleTriviaChoice}
+                onClue={handleTriviaClue}
+                onSpeak={handleSpeak}
+                onBack={closeTrivia}
+              />
+            ) : current ? (
               <FactCard
                 fact={current}
                 isFavorite={isFavorite(current.id)}
                 isSpeaking={isSpeaking}
+                speechSupported={speechSupported}
                 onFavorite={handleFavorite}
                 onSpeak={handleSpeak}
+                onTrivia={() => void openTrivia()}
                 onPrev={prevFact}
                 onNext={nextFact}
               />
