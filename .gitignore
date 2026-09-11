@@ -44,6 +44,3 @@ next-env.d.ts
 # native shells
 /android
 /ios
-
-# copied neural TTS web bundle
-/public/tts/kokoro.web.js

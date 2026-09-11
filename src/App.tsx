@@ -336,6 +336,7 @@ function WonderFactApp() {
                 speechSupported={speechSupported}
                 voiceName={ttsStatus.voiceName}
                 voiceLoading={ttsStatus.loading}
+                voiceProgress={ttsStatus.progress}
                 voiceEngine={ttsStatus.engine}
                 onChoice={handleTriviaChoice}
                 onClue={handleTriviaClue}
@@ -350,6 +351,7 @@ function WonderFactApp() {
                 speechSupported={speechSupported}
                 voiceName={ttsStatus.voiceName}
                 voiceLoading={ttsStatus.loading}
+                voiceProgress={ttsStatus.progress}
                 voiceEngine={ttsStatus.engine}
                 onFavorite={handleFavorite}
                 onSpeak={handleSpeak}

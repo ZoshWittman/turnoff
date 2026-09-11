@@ -64,12 +64,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [sessionSecrets, setSessionSecrets] = useState<ProviderSecrets>({});
 
   useEffect(() => {
-    const frame = requestAnimationFrame(() => {
-      setUser(readJson<AuthUser | null>(storageKeys.user, null));
-      setPinHash(readJson<string | null>(storageKeys.pinHash, null));
-      setReady(true);
-    });
-    return () => cancelAnimationFrame(frame);
+    setUser(readJson<AuthUser | null>(storageKeys.user, null));
+    setPinHash(readJson<string | null>(storageKeys.pinHash, null));
+    setReady(true);
   }, []);
 
   const persistUser = useCallback((next: AuthUser | null) => {

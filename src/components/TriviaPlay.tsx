@@ -24,6 +24,7 @@ interface TriviaPlayProps {
   speechSupported: boolean;
   voiceName?: string;
   voiceLoading?: boolean;
+  voiceProgress?: number;
   voiceEngine?: "neural" | "browser" | "none";
   onChoice: (id: string) => void;
   onClue: () => void;
@@ -42,6 +43,7 @@ export function TriviaPlay({
   speechSupported,
   voiceName,
   voiceLoading,
+  voiceProgress,
   voiceEngine,
   onChoice,
   onClue,
@@ -151,9 +153,16 @@ export function TriviaPlay({
             <div className="grid gap-2">
               <button type="button" onClick={onSpeak} className="wf-btn bg-sky-400 text-violet-950">
                 {isSpeaking ? <VolumeX size={26} /> : <Volume2 size={26} />}
-                {isSpeaking ? "Shh!" : voiceLoading ? "Almost ready…" : "Read To Me!"}
+                {isSpeaking ? "Shh!" : "Read To Me!"}
               </button>
-              {voiceName ? <VoiceBadge name={voiceName} loading={voiceLoading} engine={voiceEngine} /> : null}
+              {voiceName ? (
+                <VoiceBadge
+                  name={voiceName}
+                  loading={voiceLoading}
+                  progress={voiceProgress}
+                  engine={voiceEngine}
+                />
+              ) : null}
             </div>
           ) : (
             <p className="flex items-center justify-center rounded-2xl bg-white/80 px-3 py-2 text-center font-bold text-violet-700">

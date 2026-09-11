@@ -13,6 +13,7 @@ interface FactCardProps {
   speechSupported: boolean;
   voiceName?: string;
   voiceLoading?: boolean;
+  voiceProgress?: number;
   voiceEngine?: "neural" | "browser" | "none";
   onFavorite: () => void;
   onSpeak: () => void;
@@ -28,6 +29,7 @@ export function FactCard({
   speechSupported,
   voiceName,
   voiceLoading,
+  voiceProgress,
   voiceEngine,
   onFavorite,
   onSpeak,
@@ -103,10 +105,15 @@ export function FactCard({
                   className="wf-btn bg-sky-400 text-violet-950 hover:bg-sky-300"
                 >
                   {isSpeaking ? <VolumeX size={28} /> : <Volume2 size={28} />}
-                  {isSpeaking ? "Shh!" : voiceLoading ? "Almost ready…" : "Read To Me!"}
+                  {isSpeaking ? "Shh!" : "Read To Me!"}
                 </button>
                 {voiceName ? (
-                  <VoiceBadge name={voiceName} loading={voiceLoading} engine={voiceEngine} />
+                  <VoiceBadge
+                    name={voiceName}
+                    loading={voiceLoading}
+                    progress={voiceProgress}
+                    engine={voiceEngine}
+                  />
                 ) : null}
               </div>
             ) : (

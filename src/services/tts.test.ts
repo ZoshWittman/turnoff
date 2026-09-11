@@ -102,11 +102,11 @@ describe("kid-friendly TTS voice ranking", () => {
 });
 
 describe("voice plan chooses neural when browser voices are robotic", () => {
-  it("defaults to Kokoro Bella when there are no browser voices", () => {
+  it("defaults to Piper Amy when there are no browser voices", () => {
     const plan = resolveVoicePlan([]);
     expect(plan.engine).toBe("neural");
-    expect(plan.voiceId).toBe("neural:af_bella");
-    expect(plan.displayName).toBe("Bella");
+    expect(plan.voiceId).toBe("neural:en_US-amy-medium");
+    expect(plan.displayName).toBe("Amy");
   });
 
   it("defaults to neural when only eSpeak or compact voices exist", () => {
@@ -116,7 +116,7 @@ describe("voice plan chooses neural when browser voices are robotic", () => {
       voice({ name: "Microsoft David Desktop", lang: "en-US" }),
     ]);
     expect(plan.engine).toBe("neural");
-    expect(plan.displayName).toBe("Bella");
+    expect(plan.displayName).toBe("Amy");
     expect(plan.reason).toMatch(/robotic|no-browser/);
   });
 
@@ -132,16 +132,16 @@ describe("voice plan chooses neural when browser voices are robotic", () => {
   it("honors a parent neural pick even when Samantha exists", () => {
     const plan = resolveVoicePlan(
       [voice({ name: "Samantha", lang: "en-US" })],
-      "neural:af_sky",
+      "neural:en_US-hfc_female-medium",
     );
     expect(plan.engine).toBe("neural");
-    expect(plan.displayName).toBe("Sky");
+    expect(plan.displayName).toBe("Holly");
   });
 
   it("lists auto, neural storytellers, then browser voices", () => {
     const choices = listSpeakableVoices([voice({ name: "Samantha", lang: "en-US" })]);
     expect(choices[0]?.id).toBe("auto");
-    expect(choices.some((item) => item.id === "neural:af_bella")).toBe(true);
+    expect(choices.some((item) => item.id === "neural:en_US-amy-medium")).toBe(true);
     expect(choices.some((item) => item.id === "browser:Samantha")).toBe(true);
   });
 });

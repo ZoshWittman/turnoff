@@ -10,6 +10,7 @@ import {
   speakWithNeural,
   stopNeuralPlayback,
   subscribeNeuralStatus,
+  unlockNeuralAudio,
 } from "@/services/neuralTts";
 import { cheerifySpokenText } from "@/services/spokenText";
 
@@ -300,7 +301,7 @@ function refreshPlan(): VoicePlan {
 
 export function getTtsStatus(): TtsStatus {
   const neural = getNeuralLoadState();
-  const loading = activePlan.engine === "neural" && (neural.loading || neural.progress < 1) && !neural.error;
+  const loading = activePlan.engine === "neural" && neural.loading && !neural.error;
   return {
     engine: activePlan.engine,
     voiceName: activePlan.displayName,
@@ -405,6 +406,7 @@ export function speakFact(text: string, onEnd?: () => void): void {
     onEnd?.();
     return;
   }
+  unlockNeuralAudio();
   stopSpeaking();
   bindVoicesListener();
   const voices = browserVoices();
