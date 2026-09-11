@@ -342,10 +342,25 @@ export async function speakWithNeural(
     }
     phase("play");
     const ctx = getAudioContext();
+    phase(`ctx-${ctx.state}`);
     startKeepAlive(ctx);
-    if (ctx.state === "suspended") await ctx.resume();
-    const bytes = await blob.arrayBuffer();
+    void ctx.resume();
+    const bytes = await new Promise<ArrayBuffer>((resolve, reject) => {
+      const reader = new FileReader();
+      const timer = window.setTimeout(() => reject(new Error("wav-read-timeout")), 4000);
+      reader.onload = () => {
+        window.clearTimeout(timer);
+        resolve(reader.result as ArrayBuffer);
+      };
+      reader.onerror = () => {
+        window.clearTimeout(timer);
+        reject(new Error("wav-read"));
+      };
+      reader.readAsArrayBuffer(blob);
+    });
+    phase(`bytes-${Math.min(bytes.byteLength, 99999999)}`);
     const buffer = wavToAudioBuffer(ctx, bytes);
+    phase(`wav-${Math.round(buffer.duration * 100) / 100}`);
     if (token !== playToken) {
       options.onEnd?.();
       return;
