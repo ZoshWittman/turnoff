@@ -177,8 +177,8 @@ body {
 }
 
 .wf-snake-bead {
-  width: calc(100% / var(--wf-cols) * 0.52);
-  height: calc(100% / var(--wf-rows) * 0.52);
+  width: calc(100% / var(--wf-cols) * 0.56);
+  height: calc(100% / var(--wf-rows) * 0.56);
   box-shadow:
     0 5px 5px rgba(46, 16, 70, 0.3),
     0 1px 0 rgba(255, 255, 255, 0.55) inset,

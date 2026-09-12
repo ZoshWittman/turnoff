@@ -10,7 +10,7 @@ const FACE: Record<Direction, string> = {
   left: "rotate(-90deg)",
 };
 
-const TUBE_STEPS = 3;
+const TUBE_STEPS = 4;
 
 export function shade(hex: string, amount: number): string {
   const raw = hex.replace("#", "");
@@ -148,7 +148,7 @@ export function Snake3D({
         .reverse()
         .map(({ bead, order }) => {
           const color = skin.colors[bead.colorIndex % skin.colors.length] ?? skin.colors[0]!;
-          const taper = 1 - bead.along * 0.34;
+          const taper = 1 - bead.along * 0.18;
           return (
             <div
               key={`${bead.x}-${bead.y}-${order}`}

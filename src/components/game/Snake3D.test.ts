@@ -10,8 +10,8 @@ describe("thin 3D snake tube", () => {
       { x: 3, y: 9 },
     ]);
     expect(beads[0]).toMatchObject({ x: 4, y: 7, isHead: true });
-    expect(beads.length).toBeGreaterThan(4);
-    expect(beads.some((bead) => bead.x === 4 && Math.abs(bead.y - (7 + 1 / 3)) < 1e-9)).toBe(true);
+    expect(beads.length).toBeGreaterThan(8);
+    expect(beads.some((bead) => bead.x === 4 && Math.abs(bead.y - 7.25) < 1e-9)).toBe(true);
     expect(beads.filter((bead) => bead.isHead)).toHaveLength(1);
   });
 
